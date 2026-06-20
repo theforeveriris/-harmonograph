@@ -18,6 +18,10 @@ import { seashell, shamrock, teardrop, gearFlower, snowflake } from './beauty';
 import { spiralGalaxy } from './spiral';
 import { doubleHelixDNA } from './dna';
 import { voidSigil } from './sigil';
+import { lorenzAttractor } from './lorenz';
+import { fermatSpiral } from './fermat';
+import { cycloid } from './cycloid';
+import { hyperbola } from './hyperbola';
 
 export const animations = [
   // Rose / 玫瑰
@@ -56,6 +60,9 @@ export const animations = [
   snowflake,
   spiralGalaxy,
   doubleHelixDNA,
+  fermatSpiral,
+  cycloid,
+  hyperbola,
   // Classic / 经典
   cardioidPolar,
   // Exotic / 异形
@@ -63,4 +70,5 @@ export const animations = [
   witchOfAgnesi,
   talbotCurve,
   voidSigil,
+  lorenzAttractor,
 ];
