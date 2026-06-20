@@ -458,6 +458,58 @@ input[type="text"].param-input {
   font-style: italic;
 }
 
+.code-box code .attr {
+  color: #e06c75;
+}
+
+.code-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.code-tab {
+  padding: 4px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.code-tab.active {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.code-tab:hover:not(.active) {
+  color: var(--text);
+}
+
+.code-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.download-btn {
+  color: #61afef;
+  border-color: rgba(97, 175, 239, 0.3);
+}
+
+.download-btn:hover {
+  color: #61afef;
+  border-color: rgba(97, 175, 239, 0.6);
+  background: rgba(97, 175, 239, 0.08);
+}
+
 /* ========== TABLET (>= 640px) ========== */
 @media (min-width: 640px) {
   .header-inner {
