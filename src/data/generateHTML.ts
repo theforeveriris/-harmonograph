@@ -8,20 +8,7 @@ import type { AnimationDef, LiveConfig } from '../types';
 export function generateStandaloneHTML(animation: AnimationDef, cfg: LiveConfig): string {
   const title = `${animation.name} — ${animation.nameZh}`;
   const bgColor = (cfg.backgroundColor as string) || '#050505';
-  const particleCount = (cfg.particleCount as number) || 100;
-  const trailSpan = (cfg.trailSpan as number) || 0.3;
-  const durationMs = (cfg.durationMs as number) || 7000;
-  const strokeWidth = (cfg.strokeWidth as number) || 2.5;
-  const pathOpacity = (cfg.pathOpacity as number) || 0.15;
-  const hueBase = (cfg.hueBase as number) ?? 280;
-  const hueSpread = (cfg.hueSpread as number) ?? 60;
-  const satBase = (cfg.satBase as number) ?? 70;
-  const lightBase = (cfg.lightBase as number) ?? 67;
-  const rotationSpeed = (cfg.rotationSpeed as number) ?? 1;
-  const zoom = (cfg.zoom as number) || 1;
   const color = (cfg.color as string) || '#f5f5f5';
-  const direction = (cfg.animationDirection as number) ?? 1;
-  const pathGlow = (cfg.pathGlow as number) || 0;
 
   // Get the point function code from the animation's code() method
   const pointCode = animation.code(cfg);
@@ -32,8 +19,19 @@ export function generateStandaloneHTML(animation: AnimationDef, cfg: LiveConfig)
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
-  // Determine if the animation uses rotation (has non-zero getRotation)
+  // Determine if the animation uses rotation
+  const rotationSpeed = (cfg.rotationSpeed as number) ?? 1;
   const hasRotation = rotationSpeed > 0;
+  const durationMs = (cfg.durationMs as number) || 7000;
+
+  // Build config object with ALL parameters from liveConfig
+  const configEntries = Object.entries(cfg)
+    .filter(([key]) => key !== 'backgroundColor' && key !== 'color')
+    .map(([key, value]) => {
+      if (typeof value === 'string') return `      ${key}: '${value}',`;
+      return `      ${key}: ${JSON.stringify(value)},`;
+    })
+    .join('\n');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -64,7 +62,7 @@ export function generateStandaloneHTML(animation: AnimationDef, cfg: LiveConfig)
 <body>
   <div class="demo">
     <div class="frame">
-      <svg viewBox="${(50 - 50 * zoom).toFixed(1)} ${(50 - 50 * zoom).toFixed(1)} ${(100 * zoom).toFixed(1)} ${(100 * zoom).toFixed(1)}" fill="none" aria-hidden="true">
+      <svg viewBox="${(50 - 50 * (cfg.zoom as number || 1)).toFixed(1)} ${(50 - 50 * (cfg.zoom as number || 1)).toFixed(1)} ${(100 * (cfg.zoom as number || 1)).toFixed(1)} ${(100 * (cfg.zoom as number || 1)).toFixed(1)}" fill="none" aria-hidden="true">
         <defs>
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="2" result="blur" />
@@ -75,7 +73,7 @@ export function generateStandaloneHTML(animation: AnimationDef, cfg: LiveConfig)
           </filter>
         </defs>
         <g id="group">
-          <path id="path" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" opacity="${pathOpacity}"${pathGlow > 0 ? ' filter="url(#glow)"' : ''}></path>
+          <path id="path" stroke="${color}" stroke-width="${cfg.strokeWidth || 2.5}" stroke-linecap="round" stroke-linejoin="round" opacity="${cfg.pathOpacity || 0.15}"${(cfg.pathGlow as number) > 0 ? ' filter="url(#glow)"' : ''}></path>
         </g>
       </svg>
     </div>
@@ -88,17 +86,7 @@ export function generateStandaloneHTML(animation: AnimationDef, cfg: LiveConfig)
   <script>
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const config = {
-      particleCount: ${particleCount},
-      trailSpan: ${trailSpan},
-      durationMs: ${durationMs},
-      strokeWidth: ${strokeWidth},
-      pathOpacity: ${pathOpacity},
-      hueBase: ${hueBase},
-      hueSpread: ${hueSpread},
-      satBase: ${satBase},
-      lightBase: ${lightBase},
-      rotationSpeed: ${rotationSpeed},
-      direction: ${direction},
+${configEntries}
     };
 
     const group = document.querySelector('#group');
@@ -111,7 +99,7 @@ ${indentLines(pointCode, 6)}
 
     // --- Build SVG path ---
     function buildPath(time, steps) {
-      steps = steps || 400;
+      steps = steps || (config.pathResolution || 400);
       let d = '';
       for (let i = 0; i <= steps; i++) {
         const pt = point(i / steps, time);
@@ -124,7 +112,7 @@ ${indentLines(pointCode, 6)}
     const particles = [];
     for (let i = 0; i < config.particleCount; i++) {
       const circle = document.createElementNS(SVG_NS, 'circle');
-      circle.setAttribute('fill', 'hsl(${hueBase}, ${satBase}%, ${lightBase}%)');
+      circle.setAttribute('fill', 'hsl(' + (config.hueBase || 280) + ', ' + (config.satBase || 70) + '%, ' + (config.lightBase || 67) + '%)');
       group.appendChild(circle);
       particles.push(circle);
     }
@@ -135,12 +123,18 @@ ${indentLines(pointCode, 6)}
       const count = config.particleCount;
       const tailOffset = index / (count - 1);
       const pt = point(normalizeProgress(progress - tailOffset * config.trailSpan), time);
-      const fade = Math.pow(1 - tailOffset, 0.6);
+      const fade = Math.pow(1 - tailOffset, config.particleFadePower || 0.56);
+      const baseRadius = config.particleBaseRadius || 0.9;
+      const maxRadius = config.particleMaxRadius || 2.7;
+      const minOpacity = config.particleMinOpacity || 0.04;
+      const pulseAmount = config.particlePulse || 0;
+      const pulseSpeed = config.particlePulseSpeed || 3;
+      const pulse = pulseAmount * (Math.sin(time / 1000 * pulseSpeed + index * 0.3) * 0.5 + 0.5);
       return {
         x: pt.x,
         y: pt.y,
-        radius: 0.5 + fade * 1.8,
-        opacity: 0.08 + fade * 0.92
+        radius: baseRadius + fade * (maxRadius - baseRadius) + pulse,
+        opacity: minOpacity + fade * (1 - minOpacity)
       };
     }
 
@@ -148,7 +142,7 @@ ${indentLines(pointCode, 6)}
     const startedAt = performance.now();
     function render(now) {
       const time = now - startedAt;
-      const effectiveTime = config.direction < 0 ? -time : time;
+      const effectiveTime = config.animationDirection < 0 ? -time : time;
       const progress = (time % config.durationMs) / config.durationMs;
 
       // Rotation
@@ -160,22 +154,26 @@ ${indentLines(pointCode, 6)}
 
       // Dynamic path color (HSL cycling)
       const t = time / 1000;
-      const h = (config.hueBase + t * 8) % 360;
-      const s = config.satBase + Math.sin(t * 1.3) * 15;
-      const l = config.lightBase + Math.cos(t * 0.9) * 10;
+      const hueSpeed = config.hueSpeed || 8;
+      const satRange = config.satRange || 30;
+      const lightRange = config.lightRange || 18;
+      const h = (config.hueBase + t * hueSpeed) % 360;
+      const s = config.satBase + Math.sin(t * 1.3) * satRange;
+      const l = config.lightBase + Math.cos(t * 0.9) * lightRange;
       path.setAttribute('stroke', 'hsl(' + h.toFixed(1) + ', ' + s.toFixed(1) + '%, ' + l.toFixed(1) + '%)');
 
       // Path breathing opacity
-      const breathe = 0.5 + Math.sin(t * 1.5) * 0.25;
+      const breathSpeed = config.pathBreathingSpeed || 1.5;
+      const breathe = 0.5 + Math.sin(t * breathSpeed) * 0.25;
       path.setAttribute('opacity', Math.max(0.08, breathe * config.pathOpacity * 0.9).toFixed(3));
 
       // Particles
       for (let i = 0; i < config.particleCount; i++) {
         const p = getParticle(i, progress, effectiveTime);
         const tailOffset = i / (config.particleCount - 1);
-        const ph = (config.hueBase + t * 8 + tailOffset * config.hueSpread) % 360;
-        const ps = config.satBase + Math.sin(t * 1.3 + tailOffset * 4) * 15;
-        const pl = config.lightBase + Math.cos(t * 0.9 + tailOffset * 3) * 10;
+        const ph = (config.hueBase + t * hueSpeed + tailOffset * config.hueSpread) % 360;
+        const ps = config.satBase + Math.sin(t * 1.3 + tailOffset * 4) * satRange;
+        const pl = config.lightBase + Math.cos(t * 0.9 + tailOffset * 3) * lightRange;
         particles[i].setAttribute('cx', p.x.toFixed(2));
         particles[i].setAttribute('cy', p.y.toFixed(2));
         particles[i].setAttribute('r', p.radius.toFixed(2));
