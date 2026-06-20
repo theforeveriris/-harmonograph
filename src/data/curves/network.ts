@@ -23,29 +23,29 @@ export const graphFlow: AnimationDef = {
   name: 'Graph Flow',
   tag: 'Network Topology Animation',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 150, step: 1, val: 100 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.3 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 12000, step: 100, val: 7000 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 150, step: 1, val: 100 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.3 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 4000, max: 12000, step: 100, val: 7000 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 330 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 330 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     // --- Static fallback color ---
-    { key: 'color', label: 'Static Color', type: 'color', val: '#f472b6' },
+    { key: 'color', label: 'Static Color', labelZh: '静态颜色', type: 'color', val: '#f472b6' },
   ],
   formula(cfg) {
     return [
       `Graph traversal with spring forces`,
       `Nodes: 6, Edges: 13`,
       `Force-directed layout`,
-      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}·t`,
     ].join('\n');
   },
   point(progress, time, _cfg) {
@@ -76,7 +76,7 @@ export const graphFlow: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(_cfg) {
     return `const edgeIndex = Math.floor(progress * edges.length) % edges.length;
 const edgeProgress = (progress * edges.length) % 1;
 const edge = edges[edgeIndex];

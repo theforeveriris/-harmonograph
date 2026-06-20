@@ -2,6 +2,7 @@
 export interface ParamDef {
   key: string;
   label: string;
+  labelZh?: string;
   type: 'range' | 'color' | 'number' | 'text';
   min?: number;
   max?: number;
@@ -46,7 +47,7 @@ export interface AnimationDef {
   /** Compute a particle's position and appearance */
   getParticle: (index: number, progress: number, time: number, cfg: LiveConfig) => Particle;
   /** Return the source code snippet */
-  code: () => string;
+  code: (cfg: LiveConfig) => string;
   /** Optional: cache for expensive computations (e.g. L-system) */
   cache?: Record<string, string>;
   /** Optional: extra methods for specific animations */

@@ -7,24 +7,24 @@ export const spiralGalaxy: AnimationDef = {
   name: 'Spiral Galaxy',
   tag: 'Logarithmic Spiral Arms',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 250, step: 1, val: 160 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.6 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 5000, max: 20000, step: 100, val: 12000 },
-    { key: 'a', label: 'Spiral A', type: 'range', min: 0.05, max: 0.5, step: 0.01, val: 0.15 },
-    { key: 'b', label: 'Spiral B', type: 'range', min: 0.1, max: 0.5, step: 0.01, val: 0.25 },
-    { key: 'arms', label: 'Arms', type: 'range', min: 2, max: 6, step: 1, val: 3 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 250, step: 1, val: 160 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.6 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 5000, max: 20000, step: 100, val: 12000 },
+    { key: 'a', label: 'Spiral A', labelZh: '螺旋A', type: 'range', min: 0.05, max: 0.5, step: 0.01, val: 0.15 },
+    { key: 'b', label: 'Spiral B', labelZh: '螺旋B', type: 'range', min: 0.1, max: 0.5, step: 0.01, val: 0.25 },
+    { key: 'arms', label: 'Arms', labelZh: '旋臂数', type: 'range', min: 2, max: 6, step: 1, val: 3 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 20 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
-    { key: 'color', label: 'Color', type: 'color', val: '#ff6b35' },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 20 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#ff6b35' },
   ],
   formula(cfg) {
     return [
@@ -57,11 +57,11 @@ export const spiralGalaxy: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
     return `const t = progress * Math.PI * 6;
 const rotation = (time % 30000) / 30000 * Math.PI * 2;
 const theta = t + rotation;
-const r = a * Math.exp(b * t) * 38;
+const r = ${cfg.a} * Math.exp(${cfg.b} * t) * 38;
 return {
   x: 50 + r * Math.cos(theta),
   y: 50 + r * Math.sin(theta)
@@ -75,23 +75,23 @@ export const dnaHelix: AnimationDef = {
   name: 'DNA Helix',
   tag: 'Parametric Double Spiral',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 40, max: 160, step: 1, val: 80 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.25 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 5000, max: 20000, step: 100, val: 10000 },
-    { key: 'radius', label: 'Radius', type: 'range', min: 10, max: 35, step: 1, val: 20 },
-    { key: 'turns', label: 'Turns', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 40, max: 160, step: 1, val: 80 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.25 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 5000, max: 20000, step: 100, val: 10000 },
+    { key: 'radius', label: 'Radius', labelZh: '半径', type: 'range', min: 10, max: 35, step: 1, val: 20 },
+    { key: 'turns', label: 'Turns', labelZh: '圈数', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 160 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
-    { key: 'color', label: 'Color', type: 'color', val: '#10b981' },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 160 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#10b981' },
   ],
   formula(cfg) {
     return [
@@ -124,12 +124,12 @@ export const dnaHelix: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
-    return `const t = progress * Math.PI * 2 * turns;
+  code(cfg) {
+    return `const t = progress * Math.PI * 2 * ${cfg.turns};
 const rot = (time % 20000) / 20000 * Math.PI * 2;
 const angle = t + rot;
 return {
-  x: 50 + radius * Math.cos(angle),
+  x: 50 + ${cfg.radius} * Math.cos(angle),
   y: 50 + (progress - 0.5) * 70
 };`;
   },

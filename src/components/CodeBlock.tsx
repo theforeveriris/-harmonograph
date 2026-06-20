@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import type { AnimationDef } from '../types';
+import type { AnimationDef, LiveConfig } from '../types';
 import { highlightCode } from '../data/utils';
 
 interface CodeBlockProps {
   animation: AnimationDef;
+  liveConfig: LiveConfig;
 }
 
-export function CodeBlock({ animation }: CodeBlockProps) {
+export function CodeBlock({ animation, liveConfig }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(animation.code()).then(() => {
+    navigator.clipboard.writeText(animation.code(liveConfig)).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
@@ -30,7 +31,7 @@ export function CodeBlock({ animation }: CodeBlockProps) {
           </button>
         </div>
         <pre>
-          <code dangerouslySetInnerHTML={{ __html: highlightCode(animation.code()) }} />
+          <code dangerouslySetInnerHTML={{ __html: highlightCode(animation.code(liveConfig)) }} />
         </pre>
       </div>
     </section>

@@ -7,24 +7,24 @@ export const epitrochoid: AnimationDef = {
   name: 'Epitrochoid',
   tag: 'Rolling Circle Trajectory',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 200, step: 1, val: 120 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 15000, step: 100, val: 9000 },
-    { key: 'R', label: 'Fixed R', type: 'range', min: 2, max: 10, step: 0.5, val: 5 },
-    { key: 'r', label: 'Rolling r', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
-    { key: 'd', label: 'Distance d', type: 'range', min: 1, max: 10, step: 0.5, val: 5 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 4000, max: 15000, step: 100, val: 9000 },
+    { key: 'R', label: 'Fixed R', labelZh: '固定圆半径', type: 'range', min: 2, max: 10, step: 0.5, val: 5 },
+    { key: 'r', label: 'Rolling r', labelZh: '滚动圆半径', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
+    { key: 'd', label: 'Distance d', labelZh: '距离', type: 'range', min: 1, max: 10, step: 0.5, val: 5 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 0 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
-    { key: 'color', label: 'Color', type: 'color', val: '#f5f5f5' },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 0 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#f5f5f5' },
   ],
   formula(cfg) {
     return [
@@ -61,14 +61,17 @@ export const epitrochoid: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
+    const R = cfg.R as number;
+    const r = cfg.r as number;
+    const d = cfg.d as number;
     return `const t = progress * Math.PI * 2;
-const ratio = (R + r) / r;
+const ratio = (${R} + ${r}) / ${r};
 return {
-  x: 50 + ((R + r) * Math.cos(t)
-          - d * Math.cos(ratio * t)) * 3.5,
-  y: 50 + ((R + r) * Math.sin(t)
-          - d * Math.sin(ratio * t)) * 3.5
+  x: 50 + ((${R} + ${r}) * Math.cos(t)
+          - ${d} * Math.cos(ratio * t)) * 3.5,
+  y: 50 + ((${R} + ${r}) * Math.sin(t)
+          - ${d} * Math.sin(ratio * t)) * 3.5
 };`;
   },
 };
@@ -79,23 +82,23 @@ export const hypocycloid: AnimationDef = {
   name: 'Hypocycloid',
   tag: 'Five-Cusped Rolling',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 150, step: 1, val: 96 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.4 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 15000, step: 100, val: 8000 },
-    { key: 'R', label: 'Fixed R', type: 'range', min: 3, max: 10, step: 0.5, val: 5 },
-    { key: 'r', label: 'Rolling r', type: 'range', min: 0.5, max: 3, step: 0.5, val: 1 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 150, step: 1, val: 96 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.4 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 4000, max: 15000, step: 100, val: 8000 },
+    { key: 'R', label: 'Fixed R', labelZh: '固定圆半径', type: 'range', min: 3, max: 10, step: 0.5, val: 5 },
+    { key: 'r', label: 'Rolling r', labelZh: '滚动圆半径', type: 'range', min: 0.5, max: 3, step: 0.5, val: 1 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 50 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
-    { key: 'color', label: 'Color', type: 'color', val: '#ffd700' },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 50 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#ffd700' },
   ],
   formula(cfg) {
     return [
@@ -132,15 +135,17 @@ export const hypocycloid: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
+    const R = cfg.R as number;
+    const r = cfg.r as number;
     return `const t = progress * Math.PI * 2;
-const ratio = (R - r) / r;
+const ratio = (${R} - ${r}) / ${r};
 const scaleMod = 0.9 + Math.sin(pulse) * 0.1;
 return {
-  x: 50 + ((R - r) * Math.cos(t)
-          + r * Math.cos(ratio * t)) * 5.5 * scaleMod,
-  y: 50 + ((R - r) * Math.sin(t)
-          - r * Math.sin(ratio * t)) * 5.5 * scaleMod
+  x: 50 + ((${R} - ${r}) * Math.cos(t)
+          + ${r} * Math.cos(ratio * t)) * 5.5 * scaleMod,
+  y: 50 + ((${R} - ${r}) * Math.sin(t)
+          - ${r} * Math.sin(ratio * t)) * 5.5 * scaleMod
 };`;
   },
 };
@@ -151,22 +156,22 @@ export const astroid: AnimationDef = {
   name: 'Astroid',
   tag: 'Rolling Circle Envelope',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 150, step: 1, val: 100 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.3 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 3000, max: 12000, step: 100, val: 6000 },
-    { key: 'a', label: 'Radius a', type: 'range', min: 15, max: 45, step: 1, val: 35 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 150, step: 1, val: 100 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.3 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 3000, max: 12000, step: 100, val: 6000 },
+    { key: 'a', label: 'Radius a', labelZh: '半径', type: 'range', min: 15, max: 45, step: 1, val: 35 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 45 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
-    { key: 'color', label: 'Color', type: 'color', val: '#fbbf24' },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 45 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#fbbf24' },
   ],
   formula(cfg) {
     return [
@@ -199,13 +204,14 @@ export const astroid: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
+    const a = cfg.a as number;
     return `const t = progress * Math.PI * 2;
 const scaleMod = 0.85 + Math.sin(pulse) * 0.15;
 const c = Math.cos(t), s = Math.sin(t);
 return {
-  x: 50 + a * scaleMod * c * c * c,
-  y: 50 + a * scaleMod * s * s * s
+  x: 50 + ${a} * scaleMod * c * c * c,
+  y: 50 + ${a} * scaleMod * s * s * s
 };`;
   },
 };

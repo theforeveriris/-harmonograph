@@ -49,7 +49,7 @@ function App() {
           liveConfig={liveConfig}
           onConfigChange={handleConfigChange}
         />
-        <CodeBlock animation={activeAnim} />
+        <CodeBlock animation={activeAnim} liveConfig={liveConfig} />
       </main>
     </>
   );

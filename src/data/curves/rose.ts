@@ -8,28 +8,28 @@ export const originalRose: AnimationDef = {
   tag: 'Custom Rose Trail',
   params: [
     // --- Curve geometry ---
-    { key: 'baseRadius', label: 'Base Radius', type: 'range', min: 2, max: 15, step: 0.1, val: 8.1 },
-    { key: 'detailAmplitude', label: 'Detail Amp', type: 'range', min: 0, max: 10, step: 0.1, val: 3.9 },
-    { key: 'petalCount', label: 'Petal Count', type: 'range', min: 2, max: 16, step: 1, val: 8 },
-    { key: 'curveScale', label: 'Curve Scale', type: 'range', min: 2, max: 8, step: 0.1, val: 4.5 },
+    { key: 'baseRadius', label: 'Base Radius', labelZh: '基础半径', type: 'range', min: 2, max: 15, step: 0.1, val: 8.1 },
+    { key: 'detailAmplitude', label: 'Detail Amp', labelZh: '细节振幅', type: 'range', min: 0, max: 10, step: 0.1, val: 3.9 },
+    { key: 'petalCount', label: 'Petal Count', labelZh: '花瓣数量', type: 'range', min: 2, max: 16, step: 1, val: 8 },
+    { key: 'curveScale', label: 'Curve Scale', labelZh: '曲线缩放', type: 'range', min: 2, max: 8, step: 0.1, val: 4.5 },
     // --- Timing ---
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 2000, max: 15000, step: 100, val: 7300 },
-    { key: 'rotationDurationMs', label: 'Rotation (ms)', type: 'range', min: 5000, max: 60000, step: 500, val: 44500 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 2000, max: 15000, step: 100, val: 7300 },
+    { key: 'rotationDurationMs', label: 'Rotation (ms)', labelZh: '旋转周期', type: 'range', min: 5000, max: 60000, step: 500, val: 44500 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 4.1 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 4.1 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 250, step: 1, val: 120 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 250, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 280 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 280 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     // --- Static fallback color ---
-    { key: 'color', label: 'Static Color', type: 'color', val: '#f5f5f5' },
+    { key: 'color', label: 'Static Color', labelZh: '静态颜色', type: 'color', val: '#f5f5f5' },
   ],
   formula(cfg) {
     return [
@@ -64,15 +64,15 @@ export const originalRose: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
     return `const t = progress * Math.PI * 2;
-const petals = Math.round(cfg.petalCount);
+const petals = ${Math.round(cfg.petalCount as number)};
 const s = 0.52 + ((Math.sin(pulse + 0.55) + 1) / 2) * 0.48;
-const x = cfg.baseRadius * Math.cos(t) - cfg.detailAmplitude * s * Math.cos(petals * t);
-const y = cfg.baseRadius * Math.sin(t) - cfg.detailAmplitude * s * Math.sin(petals * t);
+const x = ${(cfg.baseRadius as number).toFixed(1)} * Math.cos(t) - ${(cfg.detailAmplitude as number).toFixed(1)} * s * Math.cos(petals * t);
+const y = ${(cfg.baseRadius as number).toFixed(1)} * Math.sin(t) - ${(cfg.detailAmplitude as number).toFixed(1)} * s * Math.sin(petals * t);
 return {
-  x: 50 + x * cfg.curveScale,
-  y: 50 + y * cfg.curveScale
+  x: 50 + x * ${(cfg.curveScale as number).toFixed(1)},
+  y: 50 + y * ${(cfg.curveScale as number).toFixed(1)}
 };`;
   },
 };
@@ -84,29 +84,29 @@ export const multiFreqRose: AnimationDef = {
   tag: 'Harmonic Superposition',
   params: [
     // --- Curve geometry ---
-    { key: 'baseRadius', label: 'Base Radius', type: 'range', min: 2, max: 15, step: 0.1, val: 8.1 },
-    { key: 'detailAmplitude', label: 'Detail Amp', type: 'range', min: 0, max: 10, step: 0.1, val: 3.9 },
-    { key: 'petalCount', label: 'Petal Count', type: 'range', min: 2, max: 16, step: 1, val: 8 },
-    { key: 'secondaryFreq', label: '2nd Freq', type: 'range', min: 1, max: 12, step: 1, val: 3 },
-    { key: 'secondaryAmp', label: '2nd Amp', type: 'range', min: 0, max: 5, step: 0.1, val: 1.5 },
-    { key: 'curveScale', label: 'Curve Scale', type: 'range', min: 2, max: 8, step: 0.1, val: 4.5 },
+    { key: 'baseRadius', label: 'Base Radius', labelZh: '基础半径', type: 'range', min: 2, max: 15, step: 0.1, val: 8.1 },
+    { key: 'detailAmplitude', label: 'Detail Amp', labelZh: '细节振幅', type: 'range', min: 0, max: 10, step: 0.1, val: 3.9 },
+    { key: 'petalCount', label: 'Petal Count', labelZh: '花瓣数量', type: 'range', min: 2, max: 16, step: 1, val: 8 },
+    { key: 'secondaryFreq', label: '2nd Freq', labelZh: '第二频率', type: 'range', min: 1, max: 12, step: 1, val: 3 },
+    { key: 'secondaryAmp', label: '2nd Amp', labelZh: '第二振幅', type: 'range', min: 0, max: 5, step: 0.1, val: 1.5 },
+    { key: 'curveScale', label: 'Curve Scale', labelZh: '曲线缩放', type: 'range', min: 2, max: 8, step: 0.1, val: 4.5 },
     // --- Timing ---
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 2000, max: 15000, step: 100, val: 7300 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 2000, max: 15000, step: 100, val: 7300 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 4.1 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 4.1 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 250, step: 1, val: 120 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 250, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 200 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 6 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 50 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 75 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 65 },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 200 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 6 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 50 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 75 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 65 },
     // --- Static fallback color ---
-    { key: 'color', label: 'Static Color', type: 'color', val: '#f5f5f5' },
+    { key: 'color', label: 'Static Color', labelZh: '静态颜色', type: 'color', val: '#f5f5f5' },
   ],
   formula(cfg) {
     return [
@@ -143,16 +143,16 @@ export const multiFreqRose: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
     return `const t = progress * Math.PI * 2;
 const s1 = 0.52 + ((Math.sin(pulse1 + 0.55) + 1) / 2) * 0.48;
 const s2 = 0.6 + ((Math.sin(pulse2 * 1.3 + 1.2) + 1) / 2) * 0.4;
-const x = baseRadius * Math.cos(t)
-        - detailAmp * s1 * Math.cos(petals * t)
-        - secondaryAmp * s2 * Math.cos(secondaryFreq * t);
-const y = baseRadius * Math.sin(t)
-        - detailAmp * s1 * Math.sin(petals * t)
-        - secondaryAmp * s2 * Math.sin(secondaryFreq * t);
-return { x: 50 + x * curveScale, y: 50 + y * curveScale };`;
+const x = ${(cfg.baseRadius as number).toFixed(1)} * Math.cos(t)
+        - ${(cfg.detailAmplitude as number).toFixed(1)} * s1 * Math.cos(${Math.round(cfg.petalCount as number)} * t)
+        - ${(cfg.secondaryAmp as number).toFixed(1)} * s2 * Math.cos(${(cfg.secondaryFreq as number)} * t);
+const y = ${(cfg.baseRadius as number).toFixed(1)} * Math.sin(t)
+        - ${(cfg.detailAmplitude as number).toFixed(1)} * s1 * Math.sin(${Math.round(cfg.petalCount as number)} * t)
+        - ${(cfg.secondaryAmp as number).toFixed(1)} * s2 * Math.sin(${(cfg.secondaryFreq as number)} * t);
+return { x: 50 + x * ${(cfg.curveScale as number).toFixed(1)}, y: 50 + y * ${(cfg.curveScale as number).toFixed(1)} };`;
   },
 };

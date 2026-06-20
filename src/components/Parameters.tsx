@@ -19,7 +19,7 @@ function ParamField({
     return (
       <div className="param-field">
         <div className="param-label">
-          <span>{param.label}</span>
+          <span>{param.label}{param.labelZh ? ` / ${param.labelZh}` : ''}</span>
           <span>{value}</span>
         </div>
         <input
@@ -39,7 +39,7 @@ function ParamField({
     return (
       <div className="param-field">
         <div className="param-label">
-          <span>{param.label}</span>
+          <span>{param.label}{param.labelZh ? ` / ${param.labelZh}` : ''}</span>
           <span>{value}</span>
         </div>
         <input
@@ -56,7 +56,7 @@ function ParamField({
     return (
       <div className="param-field">
         <div className="param-label">
-          <span>{param.label}</span>
+          <span>{param.label}{param.labelZh ? ` / ${param.labelZh}` : ''}</span>
           <span>{value}</span>
         </div>
         <input

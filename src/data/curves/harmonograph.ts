@@ -22,37 +22,37 @@ export const harmonograph: AnimationDef = {
   name: 'Harmonograph',
   tag: 'Damped Pendulum Harmonics',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 250, step: 1, val: 160 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 5000, max: 20000, step: 100, val: 12000 },
-    { key: 'ampX1', label: 'Amp X1', type: 'range', min: 5, max: 40, step: 1, val: 25 },
-    { key: 'freqX1', label: 'Freq X1', type: 'range', min: 1, max: 8, step: 0.5, val: 3 },
-    { key: 'phaseX1', label: 'Phase X1', type: 'range', min: 0, max: 6.28, step: 0.1, val: 0 },
-    { key: 'dampX1', label: 'Damp X1', type: 'range', min: 0.001, max: 0.1, step: 0.001, val: 0.015 },
-    { key: 'ampY1', label: 'Amp Y1', type: 'range', min: 5, max: 40, step: 1, val: 25 },
-    { key: 'freqY1', label: 'Freq Y1', type: 'range', min: 1, max: 8, step: 0.5, val: 2 },
-    { key: 'phaseY1', label: 'Phase Y1', type: 'range', min: 0, max: 6.28, step: 0.1, val: 1.57 },
-    { key: 'dampY1', label: 'Damp Y1', type: 'range', min: 0.001, max: 0.1, step: 0.001, val: 0.012 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 250, step: 1, val: 160 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.55 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 5000, max: 20000, step: 100, val: 12000 },
+    { key: 'ampX1', label: 'Amp X1', labelZh: 'X振幅', type: 'range', min: 5, max: 40, step: 1, val: 25 },
+    { key: 'freqX1', label: 'Freq X1', labelZh: 'X频率', type: 'range', min: 1, max: 8, step: 0.5, val: 3 },
+    { key: 'phaseX1', label: 'Phase X1', labelZh: 'X相位', type: 'range', min: 0, max: 6.28, step: 0.1, val: 0 },
+    { key: 'dampX1', label: 'Damp X1', labelZh: 'X阻尼', type: 'range', min: 0.001, max: 0.1, step: 0.001, val: 0.015 },
+    { key: 'ampY1', label: 'Amp Y1', labelZh: 'Y振幅', type: 'range', min: 5, max: 40, step: 1, val: 25 },
+    { key: 'freqY1', label: 'Freq Y1', labelZh: 'Y频率', type: 'range', min: 1, max: 8, step: 0.5, val: 2 },
+    { key: 'phaseY1', label: 'Phase Y1', labelZh: 'Y相位', type: 'range', min: 0, max: 6.28, step: 0.1, val: 1.57 },
+    { key: 'dampY1', label: 'Damp Y1', labelZh: 'Y阻尼', type: 'range', min: 0.001, max: 0.1, step: 0.001, val: 0.012 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 40 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 40 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     // --- Static fallback color ---
-    { key: 'color', label: 'Static Color', type: 'color', val: '#f59e0b' },
+    { key: 'color', label: 'Static Color', labelZh: '静态颜色', type: 'color', val: '#f59e0b' },
   ],
   formula(cfg) {
     return [
       `x(t) = ${cfg.ampX1}sin(${cfg.freqX1}t + ${(cfg.phaseX1 as number).toFixed(2)})e^(-${(cfg.dampX1 as number).toFixed(3)}t)`,
       `y(t) = ${cfg.ampY1}sin(${cfg.freqY1}t + ${(cfg.phaseY1 as number).toFixed(2)})e^(-${(cfg.dampY1 as number).toFixed(3)}t)`,
       `Damped harmonic oscillation superposition`,
-      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}·t`,
     ].join('\n');
   },
   point(progress, _time, cfg) {
@@ -88,14 +88,14 @@ export const harmonograph: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
     return `// Harmonograph: damped harmonic oscillation
 const t = progress * Math.PI * 6;
 
-const x = ampX1 * Math.sin(freqX1 * t + phaseX1)
-        * Math.exp(-dampX1 * t);
-const y = ampY1 * Math.sin(freqY1 * t + phaseY1)
-        * Math.exp(-dampY1 * t);
+const x = ${cfg.ampX1} * Math.sin(${cfg.freqX1} * t + ${cfg.phaseX1})
+        * Math.exp(-${cfg.dampX1} * t);
+const y = ${cfg.ampY1} * Math.sin(${cfg.freqY1} * t + ${cfg.phaseY1})
+        * Math.exp(-${cfg.dampY1} * t);
 
 return {
   x: 50 + x,

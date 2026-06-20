@@ -7,31 +7,31 @@ export const sineWaveRing: AnimationDef = {
   name: 'Sine Wave Ring',
   tag: 'Circular Wave Interference',
   params: [
-    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 200, step: 1, val: 120 },
-    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.4 },
-    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 3000, max: 12000, step: 100, val: 6000 },
-    { key: 'baseRadius', label: 'Base Radius', type: 'range', min: 15, max: 35, step: 1, val: 25 },
-    { key: 'waveCount', label: 'Wave Count', type: 'range', min: 4, max: 24, step: 1, val: 12 },
-    { key: 'waveAmp', label: 'Wave Amp', type: 'range', min: 2, max: 12, step: 0.5, val: 6 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.4 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 3000, max: 12000, step: 100, val: 6000 },
+    { key: 'baseRadius', label: 'Base Radius', labelZh: '基础半径', type: 'range', min: 15, max: 35, step: 1, val: 25 },
+    { key: 'waveCount', label: 'Wave Count', labelZh: '波纹数量', type: 'range', min: 4, max: 24, step: 1, val: 12 },
+    { key: 'waveAmp', label: 'Wave Amp', labelZh: '波纹振幅', type: 'range', min: 2, max: 12, step: 0.5, val: 6 },
     // --- Path appearance ---
-    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
-    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     // --- Particles ---
-    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
     // --- Color (HSL dynamic) ---
-    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 140 },
-    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
-    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
-    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
-    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 140 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     // --- Static fallback color ---
-    { key: 'color', label: 'Static Color', type: 'color', val: '#22c55e' },
+    { key: 'color', label: 'Static Color', labelZh: '静态颜色', type: 'color', val: '#22c55e' },
   ],
   formula(cfg) {
     return [
-      `r(\u03B8) = R + A\u00B7sin(n\u03B8 + \u03C9t)`,
+      `r(θ) = R + A·sin(nθ + ωt)`,
       `R = ${cfg.baseRadius}, A = ${cfg.waveAmp}, n = ${cfg.waveCount}`,
-      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}·t`,
     ].join('\n');
   },
   point(progress, time, cfg) {
@@ -56,10 +56,10 @@ export const sineWaveRing: AnimationDef = {
       pulseSpeed: 3,
     });
   },
-  code() {
+  code(cfg) {
     return `const t = progress * Math.PI * 2;
 const phase = (time % duration) / duration * Math.PI * 2;
-const r = baseRadius + waveAmp * Math.sin(waveCount * t + phase);
+const r = ${cfg.baseRadius} + ${cfg.waveAmp} * Math.sin(${cfg.waveCount} * t + phase);
 return {
   x: 50 + r * Math.cos(t),
   y: 50 + r * Math.sin(t)
