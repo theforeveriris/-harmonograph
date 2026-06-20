@@ -58,7 +58,7 @@ export function useGifExport({ animation, liveConfig }: UseGifExportOptions): Us
         if (frameIndex >= totalFrames) {
           gif.finish();
           const bytes = gif.bytes();
-          const blob = new Blob([bytes.buffer], { type: 'image/gif' });
+          const blob = new Blob([new Uint8Array(bytes)], { type: 'image/gif' });
           triggerDownload(blob, `${animation.id}.gif`);
           setExporting(false);
           setProgress(100);
