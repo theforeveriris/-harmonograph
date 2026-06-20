@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef } from 'react';
-import GIF from 'gif.js';
+import { useState, useCallback } from 'react';
+import { GIFEncoder, quantize, applyPalette } from 'gifenc';
 import type { AnimationDef, LiveConfig } from '../types';
 
 interface UseGifExportOptions {
@@ -16,7 +16,6 @@ interface UseGifExportReturn {
 export function useGifExport({ animation, liveConfig }: UseGifExportOptions): UseGifExportReturn {
   const [exporting, setExporting] = useState(false);
   const [progress, setProgress] = useState(0);
-  const gifRef = useRef<GIF | null>(null);
 
   const exportGif = useCallback(
     (options?: { width?: number; frames?: number; fps?: number }) => {
@@ -50,137 +49,103 @@ export function useGifExport({ animation, liveConfig }: UseGifExportOptions): Us
 
       const vb = `${(50 - 50 * zoom).toFixed(1)} ${(50 - 50 * zoom).toFixed(1)} ${(100 * zoom).toFixed(1)} ${(100 * zoom).toFixed(1)}`;
 
-      // Resolve worker script: fetch and inline as Blob URL to avoid path issues
-      const workerScriptPromise = fetch('/gif.worker.js')
-        .then((r) => r.text())
-        .then((text) => {
-          const blob = new Blob([text], { type: 'application/javascript' });
-          return URL.createObjectURL(blob);
-        })
-        .catch(() => {
-          // Fallback: try base-relative path
-          const scripts = document.querySelectorAll('script[src]');
-          for (const s of scripts) {
-            const src = s.getAttribute('src') || '';
-            if (src.includes('/assets/')) {
-              const base = src.substring(0, src.lastIndexOf('/assets/') + 1);
-              return base + 'gif.worker.js';
-            }
-          }
-          return '/gif.worker.js';
-        });
+      const gif = GIFEncoder();
+      const delay = Math.round(1000 / fps);
 
-      workerScriptPromise.then((workerScript) => {
-        const gif = new GIF({
-          workers: 2,
-          quality: 10,
-          width: size,
-          height: size,
-          workerScript,
-          background: bgColor,
-          repeat: 0,
-        });
+      let frameIndex = 0;
 
-        gifRef.current = gif;
+      const renderFrame = () => {
+        if (frameIndex >= totalFrames) {
+          gif.finish();
+          const bytes = gif.bytes();
+          const blob = new Blob([bytes], { type: 'image/gif' });
+          triggerDownload(blob, `${animation.id}.gif`);
+          setExporting(false);
+          setProgress(100);
+          setTimeout(() => setProgress(0), 1500);
+          return;
+        }
 
-        let frameIndex = 0;
+        const fraction = frameIndex / totalFrames;
+        const time = fraction * durationMs;
+        const effectiveTime = direction < 0 ? -time : time;
+        const t = time / 1000;
 
-        const renderFrame = () => {
-          if (frameIndex >= totalFrames) {
-            gif.render();
-            return;
-          }
+        // Build SVG for this frame
+        const rot = animation.getRotation(effectiveTime, liveConfig) * rotationSpeed;
+        const rotAttr = rot !== 0 ? ` transform="rotate(${rot.toFixed(2)} 50 50)"` : '';
 
-          const fraction = frameIndex / totalFrames;
-          const time = fraction * durationMs;
-          const effectiveTime = direction < 0 ? -time : time;
-          const t = time / 1000;
+        const steps = Math.max(60, Math.round((liveConfig.pathResolution as number) || 360));
+        const pathD = animation.buildPath(effectiveTime, liveConfig, steps);
 
-          // Build SVG for this frame
-          const rot = animation.getRotation(effectiveTime, liveConfig) * rotationSpeed;
-          const rotAttr = rot !== 0 ? ` transform="rotate(${rot.toFixed(2)} 50 50)"` : '';
+        // Path color (HSL cycling)
+        const h = (hueBase + t * hueSpeed) % 360;
+        const s = satBase + Math.sin(t * 1.3) * satRange;
+        const l = lightBase + Math.cos(t * 0.9) * lightRange;
+        const pathColor = `hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`;
 
-          const steps = Math.max(60, Math.round((liveConfig.pathResolution as number) || 360));
-          const pathD = animation.buildPath(effectiveTime, liveConfig, steps);
+        // Breathing opacity
+        const breathSpeed = (liveConfig.pathBreathingSpeed as number) ?? 1.5;
+        const breathe = 0.5 + Math.sin(t * breathSpeed) * 0.25;
+        const currentPathOpacity = Math.max(0.08, breathe * pathOpacity * 0.9);
 
-          // Path color (HSL cycling)
-          const h = (hueBase + t * hueSpeed) % 360;
-          const s = satBase + Math.sin(t * 1.3) * satRange;
-          const l = lightBase + Math.cos(t * 0.9) * lightRange;
-          const pathColor = `hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`;
+        // Particles
+        const progress = (time % durationMs) / durationMs;
+        let particlesSVG = '';
+        for (let i = 0; i < particleCount; i++) {
+          const particle = animation.getParticle(i, progress, time, liveConfig);
+          const tailOffset = i / (particleCount - 1);
+          const ph = (hueBase + t * hueSpeed + tailOffset * hueSpread) % 360;
+          const ps = satBase + Math.sin(t * 1.3 + tailOffset * 4) * satRange;
+          const pl = lightBase + Math.cos(t * 0.9 + tailOffset * 3) * lightRange;
+          const fillColor = particle.color || `hsl(${ph.toFixed(1)}, ${ps.toFixed(1)}%, ${pl.toFixed(1)}%)`;
+          particlesSVG += `  <circle cx="${particle.x.toFixed(2)}" cy="${particle.y.toFixed(2)}" r="${particle.radius.toFixed(2)}" fill="${fillColor}" opacity="${particle.opacity.toFixed(3)}" />\n`;
+        }
 
-          // Breathing opacity
-          const breathSpeed = (liveConfig.pathBreathingSpeed as number) ?? 1.5;
-          const breathe = 0.5 + Math.sin(t * breathSpeed) * 0.25;
-          const currentPathOpacity = Math.max(0.08, breathe * pathOpacity * 0.9);
-
-          // Particles
-          const progress = (time % durationMs) / durationMs;
-          let particlesSVG = '';
-          for (let i = 0; i < particleCount; i++) {
-            const particle = animation.getParticle(i, progress, time, liveConfig);
-            const tailOffset = i / (particleCount - 1);
-            const ph = (hueBase + t * hueSpeed + tailOffset * hueSpread) % 360;
-            const ps = satBase + Math.sin(t * 1.3 + tailOffset * 4) * satRange;
-            const pl = lightBase + Math.cos(t * 0.9 + tailOffset * 3) * lightRange;
-            const fillColor = particle.color || `hsl(${ph.toFixed(1)}, ${ps.toFixed(1)}%, ${pl.toFixed(1)}%)`;
-            particlesSVG += `  <circle cx="${particle.x.toFixed(2)}" cy="${particle.y.toFixed(2)}" r="${particle.radius.toFixed(2)}" fill="${fillColor}" opacity="${particle.opacity.toFixed(3)}" />\n`;
-          }
-
-          const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${size}" height="${size}">
+        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${size}" height="${size}">
   <rect width="100%" height="100%" fill="${bgColor}" />
   <g${rotAttr}>
     <path d="${pathD}" stroke="${pathColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="${currentPathOpacity.toFixed(3)}" />
 ${particlesSVG}  </g>
 </svg>`;
 
-          const img = new Image();
-          const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
-          const url = URL.createObjectURL(svgBlob);
+        const img = new Image();
+        const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
 
-          img.onload = () => {
-            ctx.clearRect(0, 0, size, size);
-            ctx.drawImage(img, 0, 0, size, size);
-            URL.revokeObjectURL(url);
-            gif.addFrame(canvas, 1000 / fps);
-            frameIndex++;
-            setProgress(Math.round((frameIndex / totalFrames) * 100));
-            setTimeout(renderFrame, 0);
-          };
-          img.onerror = () => {
-            URL.revokeObjectURL(url);
-            frameIndex++;
-            setProgress(Math.round((frameIndex / totalFrames) * 100));
-            setTimeout(renderFrame, 0);
-          };
-          img.src = url;
+        img.onload = () => {
+          ctx.clearRect(0, 0, size, size);
+          ctx.drawImage(img, 0, 0, size, size);
+          URL.revokeObjectURL(url);
+
+          // Get RGBA pixel data from canvas
+          const imageData = ctx.getImageData(0, 0, size, size);
+          const rgba = imageData.data;
+
+          // Quantize colors and apply palette
+          const palette = quantize(rgba, 256);
+          const index = applyPalette(rgba, palette);
+
+          // Write frame to GIF
+          gif.writeFrame(index, size, size, { palette, delay, repeat: 0 });
+
+          frameIndex++;
+          setProgress(Math.round((frameIndex / totalFrames) * 100));
+          // Use setTimeout to avoid blocking the UI
+          setTimeout(renderFrame, 0);
         };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          console.error('GIF export: failed to render SVG frame', frameIndex);
+          frameIndex++;
+          setProgress(Math.round((frameIndex / totalFrames) * 100));
+          setTimeout(renderFrame, 0);
+        };
+        img.src = url;
+      };
 
-        // Handle GIF finished
-        gif.on('finished', (data?: Blob) => {
-          const blob = data;
-          if (!blob) {
-            console.error('GIF export: finished event returned no blob');
-            setExporting(false);
-            setProgress(0);
-            return;
-          }
-          triggerDownload(blob, `${animation.id}.gif`);
-          setExporting(false);
-          setProgress(100);
-          setTimeout(() => setProgress(0), 1500);
-        });
-
-        // Handle errors
-        gif.on('error', (err?: unknown) => {
-          console.error('GIF export error:', err);
-          setExporting(false);
-          setProgress(0);
-        });
-
-        // Start rendering frames
-        renderFrame();
-      });
+      // Start rendering frames
+      renderFrame();
     },
     [animation, liveConfig],
   );
@@ -196,7 +161,6 @@ function triggerDownload(blob: Blob, filename: string) {
   a.download = filename;
   document.body.appendChild(a);
   a.click();
-  // Cleanup after a delay to ensure download starts
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
