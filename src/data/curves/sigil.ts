@@ -28,10 +28,10 @@ export const voidSigil: AnimationDef = {
     { key: 'b3', label: 'Inner B', labelZh: '内层B', type: 'range', min: 1, max: 12, step: 0.5, val: 3 },
     // Global
     { key: 'scale', label: 'Scale', labelZh: '缩放', type: 'range', min: 0.5, max: 3, step: 0.1, val: 2.0 },
-    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 200, step: 1, val: 90 },
-    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
-    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 4000, max: 15000, step: 100, val: 8000 },
-    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 2.5 },
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 200, step: 1, val: 60 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.6 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 4000, max: 15000, step: 100, val: 12000 },
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.2, max: 5, step: 0.1, val: 0.8 },
     { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
     { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.25 },
     { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 270 },
@@ -52,21 +52,21 @@ export const voidSigil: AnimationDef = {
     ].join('\n');
   },
   point(progress, time, cfg) {
-    const scale = cfg.scale as number;
+    const baseScale = cfg.scale as number;
     const t = time / 1000;
     const s = 0.5 + 0.5 * Math.sin(t * 0.52);
 
     // Combine three layers: progress 0→0.4 = outer, 0.4→0.7 = mid, 0.7→1 = inner
-    let n: number, a: number, b: number, speed: number, phase: number;
+    let n: number, a: number, b: number, speed: number, phase: number, scale: number;
     if (progress < 0.4) {
       n = cfg.n1 as number; a = cfg.a1 as number; b = cfg.b1 as number;
-      speed = 0.4; phase = 0;
+      speed = 0.4; phase = 0; scale = baseScale * 1.0; // outer: 2.0
     } else if (progress < 0.7) {
       n = cfg.n2 as number; a = cfg.a2 as number; b = cfg.b2 as number;
-      speed = -0.6; phase = Math.PI / 3;
+      speed = -0.6; phase = Math.PI / 3; scale = baseScale * 1.1; // mid: 2.2
     } else {
       n = cfg.n3 as number; a = cfg.a3 as number; b = cfg.b3 as number;
-      speed = 0.8; phase = Math.PI / 2;
+      speed = 0.8; phase = Math.PI / 2; scale = baseScale * 1.25; // inner: 2.5
     }
 
     const theta = progress * Math.PI * 2;
@@ -91,20 +91,20 @@ export const voidSigil: AnimationDef = {
     const normalizeProgress = (p: number) => ((p % 1) + 1) % 1;
     const p = normalizeProgress(progress - tailOffset * (cfg.trailSpan as number));
 
-    const scale = cfg.scale as number;
+    const baseScale = cfg.scale as number;
     const t = time / 1000;
     const s = 0.5 + 0.5 * Math.sin(t * 0.52);
 
-    let n: number, a: number, b: number, speed: number, phase: number;
+    let n: number, a: number, b: number, speed: number, phase: number, scale: number;
     if (curveIdx === 0) {
       n = cfg.n1 as number; a = cfg.a1 as number; b = cfg.b1 as number;
-      speed = 0.4; phase = 0;
+      speed = 0.4; phase = 0; scale = baseScale * 1.0;
     } else if (curveIdx === 1) {
       n = cfg.n2 as number; a = cfg.a2 as number; b = cfg.b2 as number;
-      speed = -0.6; phase = Math.PI / 3;
+      speed = -0.6; phase = Math.PI / 3; scale = baseScale * 1.1;
     } else {
       n = cfg.n3 as number; a = cfg.a3 as number; b = cfg.b3 as number;
-      speed = 0.8; phase = Math.PI / 2;
+      speed = 0.8; phase = Math.PI / 2; scale = baseScale * 1.25;
     }
 
     const theta = p * Math.PI * 2;
