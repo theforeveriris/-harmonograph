@@ -22,7 +22,6 @@
 
 html {
   width: 100%;
-  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -32,9 +31,7 @@ body {
   font-family: Inter, system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   min-height: 100vh;
-  min-width: 100%;
   width: 100%;
-  max-width: 100vw;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
@@ -54,6 +51,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 10px 12px;
+  width: 100%;
 }
 
 .brand {
@@ -72,6 +70,7 @@ body {
   -webkit-overflow-scrolling: touch;
   padding-bottom: 6px;
   margin-bottom: 6px;
+  width: 100%;
 }
 
 .nav-l1::-webkit-scrollbar {
@@ -113,6 +112,7 @@ body {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 2px;
+  width: 100%;
 }
 
 .nav-l2::-webkit-scrollbar {
@@ -153,6 +153,7 @@ body {
   padding: 16px 12px 40px;
   display: grid;
   gap: 20px;
+  width: 100%;
 }
 
 /* ========== CANVAS AREA ========== */
@@ -160,6 +161,7 @@ body {
   display: grid;
   place-items: center;
   padding: 12px;
+  width: 100%;
 }
 
 .canvas-box {
@@ -204,6 +206,7 @@ body {
   padding: 14px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .formula-box pre {
@@ -231,17 +234,21 @@ body {
   border-radius: var(--radius);
   background: var(--surface);
   padding: 14px;
+  width: 100%;
 }
 
 .params-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+  width: 100%;
 }
 
 .param-field {
   display: grid;
   gap: 5px;
+  width: 100%;
+  min-width: 0;
 }
 
 .param-label {
@@ -260,6 +267,7 @@ body {
 .param-input {
   width: 100%;
   accent-color: var(--accent);
+  min-width: 0;
 }
 
 input[type="range"].param-input {
@@ -303,6 +311,7 @@ input[type="color"].param-input {
   background: transparent;
   cursor: pointer;
   padding: 2px;
+  min-width: 0;
 }
 
 input[type="number"].param-input,
@@ -316,6 +325,7 @@ input[type="text"].param-input {
   font-size: 13px;
   font-family: inherit;
   width: 100%;
+  min-width: 0;
 }
 
 .param-toggle {
@@ -337,6 +347,7 @@ input[type="text"].param-input {
   border-radius: var(--radius);
   background: var(--bg-elevated);
   overflow: hidden;
+  width: 100%;
 }
 
 .code-header {
@@ -347,6 +358,7 @@ input[type="text"].param-input {
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   gap: 8px;
+  width: 100%;
 }
 
 .code-title {
@@ -390,6 +402,7 @@ input[type="text"].param-input {
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.75);
   white-space: pre;
+  width: 100%;
 }
 
 .code-box code .kw {
