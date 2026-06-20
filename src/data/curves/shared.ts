@@ -74,9 +74,9 @@ export function getParticleGeneric(
   // Particle pulsing (from reference code)
   if (pulseAmount > 0) {
     const t = time / 1000;
-    const pulse = 1 + Math.sin(t * pulseSpeed + index * 0.5) * pulseAmount;
+    const pulse = 1 + Math.sin(t * pulseSpeed + index * 0.3) * pulseAmount;
     radius *= pulse;
-    opacity *= (0.7 + Math.sin(t * 2 + tailOffset * 3) * 0.3);
+    opacity *= (0.7 + Math.sin(t * 1.2 + tailOffset * 2) * 0.3);
   }
 
   if (depthAware && pt.depth !== undefined) {

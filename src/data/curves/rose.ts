@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const originalRose: AnimationDef = {
   id: 'original-rose',
   category: 'Rose',
+  categoryZh: '玫瑰',
   name: 'Original Thinking',
+  nameZh: '原创思维',
   tag: 'Custom Rose Trail',
   params: [
     // --- Curve geometry ---
@@ -80,7 +82,9 @@ return {
 export const multiFreqRose: AnimationDef = {
   id: 'multi-freq-rose',
   category: 'Rose',
+  categoryZh: '玫瑰',
   name: 'Multi-Frequency Rose',
+  nameZh: '多频玫瑰',
   tag: 'Harmonic Superposition',
   params: [
     // --- Curve geometry ---

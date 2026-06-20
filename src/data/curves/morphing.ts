@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const superellipse: AnimationDef = {
   id: 'superellipse',
-  category: 'Morphing',
+  category: 'Curve',
+  categoryZh: '曲线',
   name: 'Superellipse',
+  nameZh: '超椭圆',
   tag: 'Lam\u00E9 Curve Deformation',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 150, step: 1, val: 108 },

@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const spirograph: AnimationDef = {
   id: 'spirograph',
   category: 'Spirograph',
+  categoryZh: '螺线花',
   name: 'Spirograph',
+  nameZh: '万花尺',
   tag: 'Hypotrochoid Drawing Toy',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 140 },
@@ -83,8 +85,10 @@ return {
 
 export const maclaurinRose: AnimationDef = {
   id: 'maclaurin-rose',
-  category: 'Spirograph',
+  category: 'Rose',
+  categoryZh: '玫瑰',
   name: 'Maclaurin Rose',
+  nameZh: '麦克劳林玫瑰',
   tag: 'r = cos(k\u03B8) Polar',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 140 },

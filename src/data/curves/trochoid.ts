@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const epitrochoid: AnimationDef = {
   id: 'epitrochoid',
   category: 'Trochoid',
+  categoryZh: '摆轮',
   name: 'Epitrochoid',
+  nameZh: '外摆线',
   tag: 'Rolling Circle Trajectory',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 120 },
@@ -79,7 +81,9 @@ return {
 export const hypocycloid: AnimationDef = {
   id: 'hypocycloid',
   category: 'Trochoid',
+  categoryZh: '摆轮',
   name: 'Hypocycloid',
+  nameZh: '内摆线',
   tag: 'Five-Cusped Rolling',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 150, step: 1, val: 96 },
@@ -153,7 +157,9 @@ return {
 export const astroid: AnimationDef = {
   id: 'astroid',
   category: 'Trochoid',
+  categoryZh: '摆轮',
   name: 'Astroid',
+  nameZh: '星形线',
   tag: 'Rolling Circle Envelope',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 150, step: 1, val: 100 },

@@ -24,19 +24,22 @@ export function Header({
       <div className="header-inner">
         <div className="brand">Harmonograph</div>
         <nav className="nav-l1">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className={`nav-l1-btn${cat === activeCategory ? ' active' : ''}`}
-              onClick={() => {
-                onCategoryChange(cat);
-                const first = animations.find((a) => a.category === cat);
-                if (first) onAnimationChange(first);
-              }}
-            >
-              {cat}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const catDef = animations.find((a) => a.category === cat);
+            return (
+              <button
+                key={cat}
+                className={`nav-l1-btn${cat === activeCategory ? ' active' : ''}`}
+                onClick={() => {
+                  onCategoryChange(cat);
+                  const first = animations.find((a) => a.category === cat);
+                  if (first) onAnimationChange(first);
+                }}
+              >
+                {catDef?.categoryZh ? `${cat} / ${catDef.categoryZh}` : cat}
+              </button>
+            );
+          })}
         </nav>
         <nav className="nav-l2">
           {categoryAnims.map((anim) => (
@@ -45,7 +48,7 @@ export function Header({
               className={`nav-l2-btn${anim.id === activeAnimId ? ' active' : ''}`}
               onClick={() => onAnimationChange(anim)}
             >
-              {anim.name}
+              {anim.nameZh ? `${anim.name} / ${anim.nameZh}` : anim.name}
             </button>
           ))}
         </nav>

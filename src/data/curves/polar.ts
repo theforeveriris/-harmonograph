@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const lemniscateOfBernoulli: AnimationDef = {
   id: 'lemniscate',
-  category: 'Polar',
+  category: 'Knot',
+  categoryZh: '纽结',
   name: 'Lemniscate of Bernoulli',
+  nameZh: '伯努利双纽线',
   tag: 'Infinity Polar Curve',
   params: [
     // --- Curve geometry ---
@@ -74,8 +76,10 @@ return {
 
 export const limacon: AnimationDef = {
   id: 'limacon',
-  category: 'Polar',
+  category: 'Curve',
+  categoryZh: '曲线',
   name: 'Limaçon',
+  nameZh: '蜗牛线',
   tag: 'Snail Shell Curve',
   params: [
     // --- Curve geometry ---

@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const sineWaveRing: AnimationDef = {
   id: 'sine-ring',
-  category: 'Wave',
+  category: 'Curve',
+  categoryZh: '曲线',
   name: 'Sine Wave Ring',
+  nameZh: '正弦波环',
   tag: 'Circular Wave Interference',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 120 },

@@ -33,7 +33,9 @@ export type LiveConfig = Record<string, number | string>;
 export interface AnimationDef {
   id: string;
   category: string;
+  categoryZh: string;
   name: string;
+  nameZh: string;
   tag: string;
   params: ParamDef[];
   /** Generate formula text from current config */

@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const figureEight: AnimationDef = {
   id: 'figure-eight',
-  category: 'Orbital',
+  category: 'Knot',
+  categoryZh: '纽结',
   name: 'Figure-8 Orbit',
+  nameZh: '八字轨道',
   tag: 'Lemniscate Gerono',
   params: [
     // --- Curve geometry ---

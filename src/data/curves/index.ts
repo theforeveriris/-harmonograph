@@ -6,43 +6,52 @@ import { epitrochoid, hypocycloid, astroid } from './trochoid';
 import { superellipse } from './morphing';
 import { sineWaveRing } from './wave';
 import { lemniscateOfBernoulli, limacon } from './polar';
-import { conicEllipse, conicSpiral } from './conic';
+import { conicEllipse } from './conic';
 import { spirograph, maclaurinRose } from './spirograph';
-import { maurerRose, fermatSpiral } from './special';
+import { maurerRose } from './special';
 import { figureEight } from './orbital';
 import { starPolygon } from './geometric';
 import { nephroid, deltoid, cardioidPolar } from './classic';
 import { rhodonea, sunflower } from './flower';
 import { torusKnot, lissajousKnot } from './knot';
+import { hypotrochoidRose, witchOfAgnesi, talbotCurve } from './exotic';
 
 export const animations = [
+  // Rose / 玫瑰
   originalRose,
   multiFreqRose,
-  lissajous,
+  rhodonea,
+  maclaurinRose,
+  maurerRose,
+  // Heart / 心形
   cardioidHeart,
   butterflyCurve,
+  // Knot / 纽结
   trefoilKnot,
   kleinBottle,
+  torusKnot,
+  lissajousKnot,
+  figureEight,
+  lemniscateOfBernoulli,
+  // Trochoid / 摆轮
   epitrochoid,
   hypocycloid,
   astroid,
-  superellipse,
-  sineWaveRing,
-  lemniscateOfBernoulli,
-  limacon,
-  conicEllipse,
-  conicSpiral,
-  spirograph,
-  maclaurinRose,
-  maurerRose,
-  fermatSpiral,
-  figureEight,
-  starPolygon,
   nephroid,
   deltoid,
-  cardioidPolar,
-  rhodonea,
+  spirograph,
+  starPolygon,
+  // Curve / 曲线
+  sineWaveRing,
+  superellipse,
+  limacon,
+  conicEllipse,
   sunflower,
-  torusKnot,
-  lissajousKnot,
+  lissajous,
+  // Classic / 经典
+  cardioidPolar,
+  // Exotic / 异形
+  hypotrochoidRose,
+  witchOfAgnesi,
+  talbotCurve,
 ];

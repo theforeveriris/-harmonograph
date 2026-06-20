@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const cardioidHeart: AnimationDef = {
   id: 'heart',
   category: 'Heart',
+  categoryZh: '心形',
   name: 'Cardioid Heart',
+  nameZh: '心形线',
   tag: 'Polar Romance',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 200, step: 1, val: 128 },
@@ -71,7 +73,9 @@ return {
 export const butterflyCurve: AnimationDef = {
   id: 'butterfly',
   category: 'Heart',
+  categoryZh: '心形',
   name: 'Butterfly Curve',
+  nameZh: '蝴蝶曲线',
   tag: 'Temple H. Fay, 1989',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 140 },

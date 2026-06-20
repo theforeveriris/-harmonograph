@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const trefoilKnot: AnimationDef = {
   id: 'trefoil-knot',
-  category: 'Topology',
+  category: 'Knot',
+  categoryZh: '纽结',
   name: 'Trefoil Knot',
+  nameZh: '三叶纽结',
   tag: '3D Topology Projection',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 144 },
@@ -79,8 +81,10 @@ return {
 
 export const kleinBottle: AnimationDef = {
   id: 'klein-bottle',
-  category: 'Topology',
+  category: 'Knot',
+  categoryZh: '纽结',
   name: 'Klein Bottle',
+  nameZh: '克莱因瓶',
   tag: 'Non-Orientable Surface',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 200, step: 1, val: 120 },

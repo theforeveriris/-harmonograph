@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const torusKnot: AnimationDef = {
   id: 'torus-knot',
   category: 'Knot',
+  categoryZh: '纽结',
   name: 'Torus Knot',
+  nameZh: '环面纽结',
   tag: '(p,q) Torus Knot',
   params: [
     // --- Curve geometry ---
@@ -128,7 +130,9 @@ return {
 export const lissajousKnot: AnimationDef = {
   id: 'lissajous-knot',
   category: 'Knot',
+  categoryZh: '纽结',
   name: 'Lissajous Knot',
+  nameZh: '利萨如纽结',
   tag: '3D Lissajous Projection',
   params: [
     // --- Curve geometry ---

@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const lissajous: AnimationDef = {
   id: 'lissajous',
-  category: 'Lissajous',
+  category: 'Curve',
+  categoryZh: '曲线',
   name: 'Lissajous',
+  nameZh: '利萨如图形',
   tag: 'Dual-Frequency Harmonics',
   params: [
     { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 30, max: 200, step: 1, val: 96 },

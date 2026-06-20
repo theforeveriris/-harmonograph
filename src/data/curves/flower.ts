@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const rhodonea: AnimationDef = {
   id: 'rhodonea',
-  category: 'Flower',
+  category: 'Rose',
+  categoryZh: '玫瑰',
   name: 'Rhodonea',
+  nameZh: '玫瑰线',
   tag: 'r = cos(k\u03B8) Rose Family',
   params: [
     // --- Curve geometry ---
@@ -84,8 +86,10 @@ return {
 
 export const sunflower: AnimationDef = {
   id: 'sunflower',
-  category: 'Flower',
+  category: 'Curve',
+  categoryZh: '曲线',
   name: 'Sunflower',
+  nameZh: '向日葵',
   tag: 'Fermat Spiral Closed Loop',
   params: [
     // --- Curve geometry ---

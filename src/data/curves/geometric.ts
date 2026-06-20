@@ -3,8 +3,10 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 
 export const starPolygon: AnimationDef = {
   id: 'star-polygon',
-  category: 'Geometric',
+  category: 'Trochoid',
+  categoryZh: '摆轮',
   name: 'Star Polygon',
+  nameZh: '正星多边形',
   tag: '{n/k} Regular Star',
   params: [
     // --- Curve geometry ---

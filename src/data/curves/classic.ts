@@ -4,7 +4,9 @@ import { buildPathGeneric, getParticleGeneric } from './shared';
 export const nephroid: AnimationDef = {
   id: 'nephroid',
   category: 'Classic',
+  categoryZh: '经典',
   name: 'Nephroid',
+  nameZh: '肾脏线',
   tag: 'Kidney Curve',
   params: [
     // --- Curve geometry ---
@@ -79,7 +81,9 @@ return {
 export const deltoid: AnimationDef = {
   id: 'deltoid',
   category: 'Classic',
+  categoryZh: '经典',
   name: 'Deltoid',
+  nameZh: '三角形线',
   tag: 'Three-Cusped Hypocycloid',
   params: [
     // --- Curve geometry ---
@@ -154,7 +158,9 @@ return {
 export const cardioidPolar: AnimationDef = {
   id: 'cardioid-polar',
   category: 'Classic',
+  categoryZh: '经典',
   name: 'Cardioid',
+  nameZh: '心形极坐标',
   tag: 'Heart-Shaped Polar',
   params: [
     // --- Curve geometry ---
