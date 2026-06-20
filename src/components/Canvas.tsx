@@ -21,12 +21,27 @@ export function Canvas({ animation, liveConfig }: CanvasProps) {
     [liveConfig.color],
   );
 
+  const bgColor = (liveConfig.backgroundColor as string) || '#050505';
+  const zoom = (liveConfig.zoom as number) || 1;
+
   return (
     <section>
       <div className="canvas-wrap">
-        <div className="canvas-box">
-          <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
-            <defs />
+        <div className="canvas-box" style={{ background: bgColor }}>
+          <svg
+            viewBox={`${50 - 50 * zoom} ${50 - 50 * zoom} ${100 * zoom} ${100 * zoom}`}
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <filter id="pathGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
             <g ref={groupRef}>
               <path
                 ref={pathRef}

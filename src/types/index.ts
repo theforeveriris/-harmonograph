@@ -44,8 +44,8 @@ export interface AnimationDef {
   point: (progress: number, time: number, cfg: LiveConfig) => Point2D;
   /** Get rotation angle for the SVG group */
   getRotation: (time: number, cfg: LiveConfig) => number;
-  /** Build the full SVG path string */
-  buildPath: (time: number, cfg: LiveConfig) => string;
+  /** Build the full SVG path string (optional steps for resolution control) */
+  buildPath: (time: number, cfg: LiveConfig, steps?: number) => string;
   /** Compute a particle's position and appearance */
   getParticle: (index: number, progress: number, time: number, cfg: LiveConfig) => Particle;
   /** Return the source code snippet */

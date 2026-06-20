@@ -28,20 +28,32 @@ export function useAnimation({ animation, liveConfig }: UseAnimationOptions): Us
 
       const time = now - startedAtRef.current;
 
-      const rot = animation.getRotation(time, liveConfig);
+      // Animation direction: reverse time if direction < 0
+      const direction = (liveConfig.animationDirection as number) ?? 1;
+      const effectiveTime = direction < 0 ? -time : time;
+
+      const rot = animation.getRotation(effectiveTime, liveConfig);
+      // Rotation speed multiplier
+      const rotSpeed = (liveConfig.rotationSpeed as number) ?? 1;
       if (rot !== 0) {
-        groupRef.current.setAttribute('transform', `rotate(${rot} 50 50)`);
+        groupRef.current.setAttribute('transform', `rotate(${rot * rotSpeed} 50 50)`);
       } else {
         groupRef.current.removeAttribute('transform');
       }
 
-      pathRef.current.setAttribute('d', animation.buildPath(time, liveConfig));
+      // Path resolution (steps)
+      const resolution = (liveConfig.pathResolution as number) ?? 360;
+      // Build path with custom resolution
+      const steps = Math.max(60, Math.round(resolution));
+      const d = animation.buildPath(effectiveTime, liveConfig, steps);
+      pathRef.current.setAttribute('d', d);
 
       // Dynamic path opacity (breathing effect)
       const pathOpacity = liveConfig.pathOpacity as number;
       if (pathOpacity !== undefined) {
         const t = time / 1000;
-        const breathe = 0.5 + Math.sin(t * 1.5) * 0.25;
+        const breatheSpeed = (liveConfig.pathBreathingSpeed as number) ?? 1.5;
+        const breathe = 0.5 + Math.sin(t * breatheSpeed) * 0.25;
         const op = Math.max(0.08, breathe * pathOpacity * 0.9);
         pathRef.current.setAttribute('opacity', op.toFixed(3));
       }
@@ -59,6 +71,14 @@ export function useAnimation({ animation, liveConfig }: UseAnimationOptions): Us
         const s = satBase + Math.sin(t * 1.3) * satRange;
         const l = lightBase + Math.cos(t * 0.9) * lightRange;
         pathRef.current.setAttribute('stroke', `hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`);
+      }
+
+      // Path glow (stroke-width modulation via filter)
+      const pathGlow = liveConfig.pathGlow as number;
+      if (pathGlow !== undefined && pathGlow > 0) {
+        pathRef.current.setAttribute('filter', 'url(#pathGlowFilter)');
+      } else {
+        pathRef.current.removeAttribute('filter');
       }
 
       animIdRef.current = requestAnimationFrame(render);
