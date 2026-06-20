@@ -20,7 +20,7 @@ declare module 'gif.js' {
   class GIF {
     constructor(options: GIFOptions);
     addFrame(image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement | ImageData | GIFFrame, delay?: number): void;
-    on(event: 'progress' | 'finished' | 'abort' | 'error', callback: (data?: Blob | unknown) => void): void;
+    on(event: string, callback: (...args: any[]) => void): void;
     render(): void;
     abort(): void;
   }
