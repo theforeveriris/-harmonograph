@@ -1,0 +1,169 @@
+import type { AnimationDef } from '../../types';
+import { buildPathGeneric, getParticleGeneric } from './shared';
+
+export const epitrochoid: AnimationDef = {
+  id: 'epitrochoid',
+  category: 'Trochoid',
+  name: 'Epitrochoid',
+  tag: 'Rolling Circle Trajectory',
+  params: [
+    { key: 'particleCount', label: 'Particles', type: 'range', min: 50, max: 200, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
+    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 15000, step: 100, val: 9000 },
+    { key: 'R', label: 'Fixed R', type: 'range', min: 2, max: 10, step: 0.5, val: 5 },
+    { key: 'r', label: 'Rolling r', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
+    { key: 'd', label: 'Distance d', type: 'range', min: 1, max: 10, step: 0.5, val: 5 },
+    { key: 'color', label: 'Color', type: 'color', val: '#f5f5f5' },
+  ],
+  formula(cfg) {
+    return [
+      `x = (R+r)cos(t) - d\u00B7cos((R+r)/r\u00B7t)`,
+      `y = (R+r)sin(t) - d\u00B7sin((R+r)/r\u00B7t)`,
+      `R=${cfg.R}, r=${cfg.r}, d=${cfg.d}`,
+    ].join('\n');
+  },
+  point(progress, _time, cfg) {
+    const t = progress * Math.PI * 2;
+    const R = cfg.R as number;
+    const r = cfg.r as number;
+    const d = cfg.d as number;
+    const ratio = (R + r) / r;
+    return {
+      x: 50 + ((R + r) * Math.cos(t) - d * Math.cos(ratio * t)) * 3.5,
+      y: 50 + ((R + r) * Math.sin(t) - d * Math.sin(ratio * t)) * 3.5,
+    };
+  },
+  getRotation(_time, _cfg) {
+    return 0;
+  },
+  buildPath(time, cfg) {
+    return buildPathGeneric(this.point.bind(this), time, cfg, 400);
+  },
+  getParticle(index, progress, time, cfg) {
+    return getParticleGeneric(this.point.bind(this), index, progress, time, cfg, {
+      fadePower: 0.5,
+      baseRadius: 0.7,
+      maxRadius: 2.3,
+      minOpacity: 0.06,
+    });
+  },
+  code() {
+    return `const t = progress * Math.PI * 2;
+const ratio = (R + r) / r;
+return {
+  x: 50 + ((R + r) * Math.cos(t)
+          - d * Math.cos(ratio * t)) * 3.5,
+  y: 50 + ((R + r) * Math.sin(t)
+          - d * Math.sin(ratio * t)) * 3.5
+};`;
+  },
+};
+
+export const hypocycloid: AnimationDef = {
+  id: 'hypocycloid',
+  category: 'Trochoid',
+  name: 'Hypocycloid',
+  tag: 'Five-Cusped Rolling',
+  params: [
+    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 150, step: 1, val: 96 },
+    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.4 },
+    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 15000, step: 100, val: 8000 },
+    { key: 'R', label: 'Fixed R', type: 'range', min: 3, max: 10, step: 0.5, val: 5 },
+    { key: 'r', label: 'Rolling r', type: 'range', min: 0.5, max: 3, step: 0.5, val: 1 },
+    { key: 'color', label: 'Color', type: 'color', val: '#ffd700' },
+  ],
+  formula(cfg) {
+    return [
+      `x = (R-r)cos(t) + r\u00B7cos((R-r)/r\u00B7t)`,
+      `y = (R-r)sin(t) - r\u00B7sin((R-r)/r\u00B7t)`,
+      `R=${cfg.R}, r=${cfg.r} (${Math.round((cfg.R as number) / (cfg.r as number))} cusps)`,
+    ].join('\n');
+  },
+  point(progress, time, cfg) {
+    const t = progress * Math.PI * 2;
+    const R = cfg.R as number;
+    const r = cfg.r as number;
+    const ratio = (R - r) / r;
+    const scaleMod = 0.9 + Math.sin((time % 4000) / 4000 * Math.PI * 2) * 0.1;
+    return {
+      x: 50 + ((R - r) * Math.cos(t) + r * Math.cos(ratio * t)) * 5.5 * scaleMod,
+      y: 50 + ((R - r) * Math.sin(t) - r * Math.sin(ratio * t)) * 5.5 * scaleMod,
+    };
+  },
+  getRotation(_time, _cfg) {
+    return ((0 % 12000) / 12000) * 360;
+  },
+  buildPath(time, cfg) {
+    return buildPathGeneric(this.point.bind(this), time, cfg, 400);
+  },
+  getParticle(index, progress, time, cfg) {
+    return getParticleGeneric(this.point.bind(this), index, progress, time, cfg, {
+      fadePower: 0.5,
+      baseRadius: 0.7,
+      maxRadius: 2.2,
+      minOpacity: 0.06,
+    });
+  },
+  code() {
+    return `const t = progress * Math.PI * 2;
+const ratio = (R - r) / r;
+const scaleMod = 0.9 + Math.sin(pulse) * 0.1;
+return {
+  x: 50 + ((R - r) * Math.cos(t)
+          + r * Math.cos(ratio * t)) * 5.5 * scaleMod,
+  y: 50 + ((R - r) * Math.sin(t)
+          - r * Math.sin(ratio * t)) * 5.5 * scaleMod
+};`;
+  },
+};
+
+export const astroid: AnimationDef = {
+  id: 'astroid',
+  category: 'Trochoid',
+  name: 'Astroid',
+  tag: 'Rolling Circle Envelope',
+  params: [
+    { key: 'particleCount', label: 'Particles', type: 'range', min: 30, max: 150, step: 1, val: 100 },
+    { key: 'trailSpan', label: 'Trail Span', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.3 },
+    { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 3000, max: 12000, step: 100, val: 6000 },
+    { key: 'a', label: 'Radius a', type: 'range', min: 15, max: 45, step: 1, val: 35 },
+    { key: 'color', label: 'Color', type: 'color', val: '#fbbf24' },
+  ],
+  formula(cfg) {
+    return [
+      `x = a\u00B7cos\u00B3(t)`,
+      `y = a\u00B7sin\u00B3(t)`,
+      `a = ${cfg.a}`,
+    ].join('\n');
+  },
+  point(progress, time, cfg) {
+    const t = progress * Math.PI * 2;
+    const scaleMod = 0.85 + Math.sin((time % 3000) / 3000 * Math.PI * 2) * 0.15;
+    const c = Math.cos(t);
+    const s = Math.sin(t);
+    return { x: 50 + (cfg.a as number) * scaleMod * c * c * c, y: 50 + (cfg.a as number) * scaleMod * s * s * s };
+  },
+  getRotation(_time, _cfg) {
+    return ((0 % 15000) / 15000) * 360;
+  },
+  buildPath(time, cfg) {
+    return buildPathGeneric(this.point.bind(this), time, cfg, 360);
+  },
+  getParticle(index, progress, time, cfg) {
+    return getParticleGeneric(this.point.bind(this), index, progress, time, cfg, {
+      fadePower: 0.65,
+      baseRadius: 0.8,
+      maxRadius: 2.8,
+      minOpacity: 0.08,
+    });
+  },
+  code() {
+    return `const t = progress * Math.PI * 2;
+const scaleMod = 0.85 + Math.sin(pulse) * 0.15;
+const c = Math.cos(t), s = Math.sin(t);
+return {
+  x: 50 + a * scaleMod * c * c * c,
+  y: 50 + a * scaleMod * s * s * s
+};`;
+  },
+};
