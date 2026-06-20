@@ -15,6 +15,8 @@ import { rhodonea, sunflower } from './flower';
 import { torusKnot, lissajousKnot } from './knot';
 import { hypotrochoidRose, witchOfAgnesi, talbotCurve } from './exotic';
 import { seashell, shamrock, teardrop, gearFlower, snowflake } from './beauty';
+import { spiralGalaxy } from './spiral';
+import { doubleHelixDNA } from './dna';
 
 export const animations = [
   // Rose / 玫瑰
@@ -51,6 +53,8 @@ export const animations = [
   seashell,
   teardrop,
   snowflake,
+  spiralGalaxy,
+  doubleHelixDNA,
   // Classic / 经典
   cardioidPolar,
   // Exotic / 异形
