@@ -1,27 +1,24 @@
 import { originalRose, multiFreqRose } from './rose';
 import { lissajous } from './lissajous';
-import { spiralGalaxy, dnaHelix } from './spiral';
 import { cardioidHeart, butterflyCurve } from './heart';
 import { trefoilKnot, kleinBottle } from './topology';
 import { epitrochoid, hypocycloid, astroid } from './trochoid';
 import { superellipse } from './morphing';
-import { dragonCurve } from './fractal';
 import { sineWaveRing } from './wave';
-import { graphFlow } from './network';
-import { harmonograph } from './harmonograph';
 import { lemniscateOfBernoulli, limacon } from './polar';
 import { conicEllipse, conicSpiral } from './conic';
 import { spirograph, maclaurinRose } from './spirograph';
 import { maurerRose, fermatSpiral } from './special';
-import { figureEight, lorenzAttractor } from './orbital';
-import { starPolygon, cycloid } from './geometric';
+import { figureEight } from './orbital';
+import { starPolygon } from './geometric';
+import { nephroid, deltoid, cardioidPolar } from './classic';
+import { rhodonea, sunflower } from './flower';
+import { torusKnot, lissajousKnot } from './knot';
 
 export const animations = [
   originalRose,
   multiFreqRose,
   lissajous,
-  spiralGalaxy,
-  dnaHelix,
   cardioidHeart,
   butterflyCurve,
   trefoilKnot,
@@ -30,10 +27,7 @@ export const animations = [
   hypocycloid,
   astroid,
   superellipse,
-  dragonCurve,
   sineWaveRing,
-  graphFlow,
-  harmonograph,
   lemniscateOfBernoulli,
   limacon,
   conicEllipse,
@@ -43,7 +37,12 @@ export const animations = [
   maurerRose,
   fermatSpiral,
   figureEight,
-  lorenzAttractor,
   starPolygon,
-  cycloid,
+  nephroid,
+  deltoid,
+  cardioidPolar,
+  rhodonea,
+  sunflower,
+  torusKnot,
+  lissajousKnot,
 ];
