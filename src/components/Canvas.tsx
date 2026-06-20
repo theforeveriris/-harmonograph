@@ -34,7 +34,6 @@ export function Canvas({ animation, liveConfig }: CanvasProps) {
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                opacity="0.1"
               />
               <g ref={particlesGroupRef} />
             </g>

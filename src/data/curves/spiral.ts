@@ -13,6 +13,17 @@ export const spiralGalaxy: AnimationDef = {
     { key: 'a', label: 'Spiral A', type: 'range', min: 0.05, max: 0.5, step: 0.01, val: 0.15 },
     { key: 'b', label: 'Spiral B', type: 'range', min: 0.1, max: 0.5, step: 0.01, val: 0.25 },
     { key: 'arms', label: 'Arms', type: 'range', min: 2, max: 6, step: 1, val: 3 },
+    // --- Path appearance ---
+    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    // --- Particles ---
+    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    // --- Color (HSL dynamic) ---
+    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 20 },
+    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     { key: 'color', label: 'Color', type: 'color', val: '#ff6b35' },
   ],
   formula(cfg) {
@@ -20,6 +31,7 @@ export const spiralGalaxy: AnimationDef = {
       `r(\u03B8) = a\u00B7e^(b\u00B7\u03B8)`,
       `a = ${cfg.a}, b = ${cfg.b}`,
       `Arms: ${cfg.arms}`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
     ].join('\n');
   },
   point(progress, time, cfg) {
@@ -41,6 +53,8 @@ export const spiralGalaxy: AnimationDef = {
       baseRadius: 0.4,
       maxRadius: 2.0,
       minOpacity: 0.03,
+      pulseAmount: cfg.particlePulse as number,
+      pulseSpeed: 3,
     });
   },
   code() {
@@ -66,6 +80,17 @@ export const dnaHelix: AnimationDef = {
     { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 5000, max: 20000, step: 100, val: 10000 },
     { key: 'radius', label: 'Radius', type: 'range', min: 10, max: 35, step: 1, val: 20 },
     { key: 'turns', label: 'Turns', type: 'range', min: 1, max: 6, step: 0.5, val: 3 },
+    // --- Path appearance ---
+    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    // --- Particles ---
+    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    // --- Color (HSL dynamic) ---
+    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 160 },
+    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     { key: 'color', label: 'Color', type: 'color', val: '#10b981' },
   ],
   formula(cfg) {
@@ -74,6 +99,7 @@ export const dnaHelix: AnimationDef = {
       `y = t (vertical)`,
       `z = r\u00B7sin(t)`,
       `Double helix with ${cfg.turns} turns`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
     ].join('\n');
   },
   point(progress, time, cfg) {
@@ -94,6 +120,8 @@ export const dnaHelix: AnimationDef = {
       baseRadius: 0.6,
       maxRadius: 2.0,
       minOpacity: 0.08,
+      pulseAmount: cfg.particlePulse as number,
+      pulseSpeed: 3,
     });
   },
   code() {

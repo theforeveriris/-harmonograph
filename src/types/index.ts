@@ -22,6 +22,7 @@ export interface Particle {
   y: number;
   radius: number;
   opacity: number;
+  color?: string;
 }
 
 /** Live configuration values keyed by param key */

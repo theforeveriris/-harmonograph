@@ -34,8 +34,13 @@ export function useParticles({ animation, liveConfig }: UseParticlesOptions) {
 
     for (let i = 0; i < count; i++) {
       const circle = document.createElementNS(SVG_NS, 'circle');
-      const hue = baseHue + (i / count) * 40 - 20;
-      circle.setAttribute('fill', `hsl(${hue}, 80%, 65%)`);
+      // Use HSL dynamic color if hueBase is in config, otherwise static
+      if (liveConfig.hueBase !== undefined) {
+        circle.setAttribute('fill', 'hsl(280, 70%, 65%)');
+      } else {
+        const hue = baseHue + (i / count) * 40 - 20;
+        circle.setAttribute('fill', `hsl(${hue}, 80%, 65%)`);
+      }
       containerRef.current.appendChild(circle);
       newParticles.push(circle);
     }
@@ -45,7 +50,7 @@ export function useParticles({ animation, liveConfig }: UseParticlesOptions) {
     return () => {
       newParticles.forEach((el) => el.remove());
     };
-  }, [animation?.id, liveConfig.particleCount, liveConfig.color]);
+  }, [animation?.id, liveConfig.particleCount, liveConfig.color, liveConfig.hueBase]);
 
   const render = useCallback(
     (now: number) => {
@@ -64,6 +69,9 @@ export function useParticles({ animation, liveConfig }: UseParticlesOptions) {
           el.setAttribute('cy', particle.y.toFixed(2));
           el.setAttribute('r', particle.radius.toFixed(2));
           el.setAttribute('opacity', particle.opacity.toFixed(3));
+          if (particle.color) {
+            el.setAttribute('fill', particle.color);
+          }
         }
       }
 

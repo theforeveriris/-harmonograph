@@ -12,6 +12,17 @@ export const superellipse: AnimationDef = {
     { key: 'durationMs', label: 'Duration (ms)', type: 'range', min: 4000, max: 12000, step: 100, val: 7000 },
     { key: 'a', label: 'Width a', type: 'range', min: 20, max: 45, step: 1, val: 35 },
     { key: 'b', label: 'Height b', type: 'range', min: 20, max: 45, step: 1, val: 35 },
+    // --- Path appearance ---
+    { key: 'strokeWidth', label: 'Stroke Width', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    // --- Particles ---
+    { key: 'particlePulse', label: 'Particle Pulse', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    // --- Color (HSL dynamic) ---
+    { key: 'hueBase', label: 'Hue Base', type: 'range', min: 0, max: 360, step: 1, val: 190 },
+    { key: 'hueSpeed', label: 'Hue Speed', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', type: 'range', min: 30, max: 90, step: 1, val: 67 },
     { key: 'color', label: 'Color', type: 'color', val: '#06b6d4' },
   ],
   formula(cfg) {
@@ -19,6 +30,7 @@ export const superellipse: AnimationDef = {
       `|x/a|\u207F + |y/b|\u207F = 1`,
       `n = 2 + sin(\u03C9t)  (morphs 2\u21926)`,
       `a = ${cfg.a}, b = ${cfg.b}`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}·t`,
     ].join('\n');
   },
   point(progress, time, cfg) {
@@ -43,6 +55,8 @@ export const superellipse: AnimationDef = {
       baseRadius: 0.7,
       maxRadius: 2.4,
       minOpacity: 0.06,
+      pulseAmount: cfg.particlePulse as number,
+      pulseSpeed: 3,
     });
   },
   code() {
