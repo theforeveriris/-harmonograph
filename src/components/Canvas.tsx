@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { AnimationDef, LiveConfig } from '../types';
 import { useAnimation } from '../hooks/useAnimation';
 import { useParticles } from '../hooks/useParticles';
-import { useGifExport } from '../hooks/useGifExport';
 
 interface CanvasProps {
   animation: AnimationDef;
@@ -12,10 +11,6 @@ interface CanvasProps {
 export function Canvas({ animation, liveConfig }: CanvasProps) {
   const { groupRef, pathRef } = useAnimation({ animation, liveConfig });
   const { containerRef: particlesGroupRef } = useParticles({ animation, liveConfig });
-  const { exporting, progress, exportGif } = useGifExport({ animation, liveConfig });
-  const [showGifOptions, setShowGifOptions] = useState(false);
-  const [gifFrames, setGifFrames] = useState(60);
-  const [gifFps, setGifFps] = useState(20);
 
   const strokeWidth = useMemo(
     () => String((liveConfig.strokeWidth as number) || 3),
@@ -58,52 +53,6 @@ export function Canvas({ animation, liveConfig }: CanvasProps) {
               <g ref={particlesGroupRef} />
             </g>
           </svg>
-        </div>
-        <div className="canvas-actions">
-          <button
-            className="gif-export-btn"
-            onClick={() => setShowGifOptions(!showGifOptions)}
-            disabled={exporting}
-          >
-            {exporting ? `Exporting ${progress}%...` : 'Export GIF'}
-          </button>
-          {showGifOptions && (
-            <div className="gif-options">
-              <div className="gif-option-row">
-                <label>Frames / 帧数</label>
-                <input
-                  type="range"
-                  min={20}
-                  max={120}
-                  step={5}
-                  value={gifFrames}
-                  onChange={(e) => setGifFrames(Number(e.target.value))}
-                />
-                <span>{gifFrames}</span>
-              </div>
-              <div className="gif-option-row">
-                <label>FPS</label>
-                <input
-                  type="range"
-                  min={5}
-                  max={30}
-                  step={5}
-                  value={gifFps}
-                  onChange={(e) => setGifFps(Number(e.target.value))}
-                />
-                <span>{gifFps}</span>
-              </div>
-              <button
-                className="gif-start-btn"
-                onClick={() => {
-                  setShowGifOptions(false);
-                  exportGif({ frames: gifFrames, fps: gifFps });
-                }}
-              >
-                Start Export / 开始导出
-              </button>
-            </div>
-          )}
         </div>
       </div>
       <div className="canvas-meta">
