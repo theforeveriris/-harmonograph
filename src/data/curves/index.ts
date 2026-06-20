@@ -17,6 +17,7 @@ import { hypotrochoidRose, witchOfAgnesi, talbotCurve } from './exotic';
 import { seashell, shamrock, teardrop, gearFlower, snowflake } from './beauty';
 import { spiralGalaxy } from './spiral';
 import { doubleHelixDNA } from './dna';
+import { voidSigil } from './sigil';
 
 export const animations = [
   // Rose / 玫瑰
@@ -61,4 +62,5 @@ export const animations = [
   hypotrochoidRose,
   witchOfAgnesi,
   talbotCurve,
+  voidSigil,
 ];
