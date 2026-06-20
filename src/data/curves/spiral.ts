@@ -118,10 +118,11 @@ export const spiralGalaxy: AnimationDef = {
   },
   code(cfg) {
     return `const t = progress * Math.PI * 6;
-const armOffset = (armIndex / ${cfg.arms}) * Math.PI * 2;
+const armIndex = 0;
+const armOffset = (armIndex / ${(cfg.arms as number)}) * Math.PI * 2;
 const rotation = (time % 30000) / 30000 * Math.PI * 2;
 const theta = t + armOffset + rotation;
-const r = ${cfg.a} * Math.exp(${cfg.b} * t) * 38;
+const r = ${(cfg.a as number)} * Math.exp(${(cfg.b as number)} * t) * 38;
 return {
   x: 50 + r * Math.cos(theta),
   y: 50 + r * Math.sin(theta)

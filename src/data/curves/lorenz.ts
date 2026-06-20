@@ -142,6 +142,17 @@ export const lorenzAttractor: AnimationDef = {
     return `// Lorenz system (precomputed via Euler integration)
 const sigma = ${sigma}, rho = ${rho}, beta = ${beta};
 const scale = ${scale};
+const steps = 3000, dt = 0.008, skip = 100;
+const pts = [];
+let lx = 0.1, ly = 0, lz = 0;
+for (let i = 0; i < steps; i++) {
+  lx += sigma * (ly - lx) * dt;
+  ly += (lx * (rho - lz) - ly) * dt;
+  lz += (lx * ly - beta * lz) * dt;
+  if (i >= skip) pts.push({ x: lx, y: ly, z: lz });
+}
+const idx = Math.floor(progress * (pts.length - 1));
+const p = pts[idx];
 const rot = ((time % 30000) / 30000) * Math.PI * 2;
 const xr = p.x * Math.cos(rot) + p.z * Math.sin(rot);
 const zr = -p.x * Math.sin(rot) + p.z * Math.cos(rot);

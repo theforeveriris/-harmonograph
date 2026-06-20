@@ -82,16 +82,17 @@ export const trefoilKnot: AnimationDef = {
     });
   },
   code(cfg) {
-    return `const x = Math.sin(t) + 2 * Math.sin(2*t);
+    return `const t = progress * Math.PI * 2;
+const rot = (time % 25000) / 25000 * Math.PI * 2;
+const x = Math.sin(t) + 2 * Math.sin(2*t);
 const y = Math.cos(t) - 2 * Math.cos(2*t);
 const z = -Math.sin(3*t);
-// 3D rotation around Y axis
 const xr = x * Math.cos(rot) + z * Math.sin(rot);
 const zr = -x * Math.sin(rot) + z * Math.cos(rot);
 const perspective = 40 / (40 + zr * 0.5);
 return {
-  x: 50 + xr * ${cfg.scale} * perspective,
-  y: 50 + y * ${cfg.scale} * perspective
+  x: 50 + xr * ${(cfg.scale as number)} * perspective,
+  y: 50 + y * ${(cfg.scale as number)} * perspective
 };`;
   },
 };
@@ -182,19 +183,19 @@ export const kleinBottle: AnimationDef = {
     return `const u = progress * Math.PI * 2;
 const v = (time % 6000) / 6000 * Math.PI * 2;
 const a = 2;
+const rot = (time % 20000) / 20000 * Math.PI * 2;
 let x = (a + Math.cos(u/2)*Math.sin(v)
         - Math.sin(u/2)*Math.sin(2*v)) * Math.cos(u);
 let y = (a + Math.cos(u/2)*Math.sin(v)
         - Math.sin(u/2)*Math.sin(2*v)) * Math.sin(u);
 let z = Math.sin(u/2)*Math.sin(v)
         + Math.cos(u/2)*Math.sin(2*v);
-// 3D rotation + perspective
 const xr = x * Math.cos(rot) + z * Math.sin(rot);
 const zr = -x * Math.sin(rot) + z * Math.cos(rot);
 const perspective = 40 / (40 + zr * 0.3);
 return {
-  x: 50 + xr * ${cfg.scale} * perspective,
-  y: 50 + y * ${cfg.scale} * perspective
+  x: 50 + xr * ${(cfg.scale as number)} * perspective,
+  y: 50 + y * ${(cfg.scale as number)} * perspective
 };`;
   },
 };

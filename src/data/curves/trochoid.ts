@@ -178,6 +178,7 @@ export const hypocycloid: AnimationDef = {
     const r = cfg.r as number;
     return `const t = progress * Math.PI * 2;
 const ratio = (${R} - ${r}) / ${r};
+const pulse = (time % 4000) / 4000 * Math.PI * 2;
 const scaleMod = 0.9 + Math.sin(pulse) * 0.1;
 return {
   x: 50 + ((${R} - ${r}) * Math.cos(t)
@@ -264,6 +265,7 @@ export const astroid: AnimationDef = {
   code(cfg) {
     const a = cfg.a as number;
     return `const t = progress * Math.PI * 2;
+const pulse = (time % 3000) / 3000 * Math.PI * 2;
 const scaleMod = 0.85 + Math.sin(pulse) * 0.15;
 const c = Math.cos(t), s = Math.sin(t);
 return {

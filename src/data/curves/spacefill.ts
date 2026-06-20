@@ -149,12 +149,12 @@ export const peanoCurve: AnimationDef = {
   code(cfg) {
     const iterations = cfg.iterations as number;
     return `// Peano Curve (3\u00D73 recursive subdivision)
-const iterations = ${iterations};
-function peano(x, y, size, iter, points) {
-  if (iter === 0) { points.push({x: x+size/2, y: y+size/2}); return; }
+const points = [];
+function peano(x, y, size, iter, pts) {
+  if (iter === 0) { pts.push({x: x+size/2, y: y+size/2}); return; }
   const s = size / 3;
   const order = [[0,0],[1,0],[2,0],[2,1],[1,1],[0,1],[0,2],[1,2],[2,2]];
-  for (const [dx, dy] of order) peano(x+dx*s, y+dy*s, s, iter-1, points);
+  for (const [dx, dy] of order) peano(x+dx*s, y+dy*s, s, iter-1, pts);
 }
 peano(10, 10, 80, ${iterations}, points);
 const idx = Math.floor(progress * (points.length - 1));
@@ -250,14 +250,14 @@ export const hilbertCurve: AnimationDef = {
   code(cfg) {
     const iterations = cfg.iterations as number;
     return `// Hilbert Curve (recursive U-shaped pattern)
-const iterations = ${iterations};
-function hilbert(n, x, y, xi, xj, yi, yj, points) {
-  if (n <= 0) { points.push({x: x+(xi+yi)/2, y: y+(xj+yj)/2}); }
+const points = [];
+function hilbert(n, x, y, xi, xj, yi, yj, pts) {
+  if (n <= 0) { pts.push({x: x+(xi+yi)/2, y: y+(xj+yj)/2}); }
   else {
-    hilbert(n-1, x, y, yi/2, yj/2, xi/2, xj/2, points);
-    hilbert(n-1, x+xi/2, y+xj/2, xi/2, xj/2, yi/2, yj/2, points);
-    hilbert(n-1, x+xi/2+yi/2, y+xj/2+yj/2, xi/2, xj/2, yi/2, yj/2, points);
-    hilbert(n-1, x+xi/2+yi, y+xj/2+yj, -yi/2, -yj/2, -xi/2, -xj/2, points);
+    hilbert(n-1, x, y, yi/2, yj/2, xi/2, xj/2, pts);
+    hilbert(n-1, x+xi/2, y+xj/2, xi/2, xj/2, yi/2, yj/2, pts);
+    hilbert(n-1, x+xi/2+yi/2, y+xj/2+yj/2, xi/2, xj/2, yi/2, yj/2, pts);
+    hilbert(n-1, x+xi/2+yi, y+xj/2+yj, -yi/2, -yj/2, -xi/2, -xj/2, pts);
   }
 }
 hilbert(${iterations}, 10, 10, 80, 0, 0, 80, points);

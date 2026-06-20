@@ -86,6 +86,7 @@ export const originalRose: AnimationDef = {
   code(cfg) {
     return `const t = progress * Math.PI * 2;
 const petals = ${Math.round(cfg.petalCount as number)};
+const pulse = (time % ${(cfg.durationMs as number)}) / ${(cfg.durationMs as number)} * Math.PI * 2;
 const s = 0.52 + ((Math.sin(pulse + 0.55) + 1) / 2) * 0.48;
 const x = ${(cfg.baseRadius as number).toFixed(1)} * Math.cos(t) - ${(cfg.detailAmplitude as number).toFixed(1)} * s * Math.cos(petals * t);
 const y = ${(cfg.baseRadius as number).toFixed(1)} * Math.sin(t) - ${(cfg.detailAmplitude as number).toFixed(1)} * s * Math.sin(petals * t);
@@ -183,6 +184,9 @@ export const multiFreqRose: AnimationDef = {
   },
   code(cfg) {
     return `const t = progress * Math.PI * 2;
+const petals = ${Math.round(cfg.petalCount as number)};
+const pulse1 = (time % ${(cfg.durationMs as number)}) / ${(cfg.durationMs as number)} * Math.PI * 2;
+const pulse2 = (time % ${(cfg.durationMs as number) * 1.5}) / ${(cfg.durationMs as number) * 1.5} * Math.PI * 2;
 const s1 = 0.52 + ((Math.sin(pulse1 + 0.55) + 1) / 2) * 0.48;
 const s2 = 0.6 + ((Math.sin(pulse2 * 1.3 + 1.2) + 1) / 2) * 0.4;
 const x = ${(cfg.baseRadius as number).toFixed(1)} * Math.cos(t)

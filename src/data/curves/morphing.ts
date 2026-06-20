@@ -82,11 +82,12 @@ export const superellipse: AnimationDef = {
     const a = cfg.a as number;
     const b = cfg.b as number;
     return `const t = progress * Math.PI * 2;
+const pulse = (time % 5000) / 5000 * Math.PI * 2;
 const n = 2 + (Math.sin(pulse) + 1) * 2;
 const cos_t = Math.cos(t), sin_t = Math.sin(t);
 return {
-  x: 50 + ${a} * sign(cos_t) * Math.pow(Math.abs(cos_t), 2/n),
-  y: 50 + ${b} * sign(sin_t) * Math.pow(Math.abs(sin_t), 2/n)
+  x: 50 + ${a} * Math.sign(cos_t) * Math.pow(Math.abs(cos_t), 2/n),
+  y: 50 + ${b} * Math.sign(sin_t) * Math.pow(Math.abs(sin_t), 2/n)
 };`;
   },
 };

@@ -78,7 +78,8 @@ export const cardioidHeart: AnimationDef = {
   },
   code(cfg) {
     return `const t = progress * Math.PI * 2;
-const s = ${cfg.scale} * (0.85 + Math.sin(pulse) * 0.15);
+const pulse = (time % 3000) / 3000 * Math.PI * 2;
+const s = ${(cfg.scale as number)} * (0.85 + Math.sin(pulse) * 0.15);
 return {
   x: 50 + s * (16 * Math.pow(Math.sin(t), 3)),
   y: 50 - s * (13 * Math.cos(t) - 5*Math.cos(2*t)

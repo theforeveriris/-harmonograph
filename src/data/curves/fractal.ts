@@ -128,6 +128,7 @@ const vertices = [
   { x: 90, y: 90 }
 ];
 let px = 50, py = 50;
+const points = [];
 const iterations = ${iterations};
 const skip = 20;
 for (let i = 0; i < iterations; i++) {
@@ -136,7 +137,10 @@ for (let i = 0; i < iterations; i++) {
   py = (py + v.y) / 2;
   if (i >= skip) points.push({ x: px, y: py });
 }
-// Pulse: 1 + sin(...) * 0.05, center (50,50)`;
+const idx = Math.floor(progress * (points.length - 1));
+const p = points[idx];
+const pulse = 1 + Math.sin((time % 5000) / 5000 * Math.PI * 2) * 0.05;
+return { x: 50 + (p.x - 50) * pulse, y: 50 + (p.y - 50) * pulse };`;
   },
 };
 

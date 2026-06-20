@@ -149,17 +149,15 @@ export const voidSigil: AnimationDef = {
   },
   code(cfg) {
     return `const t = time / 1000;
+const theta = progress * Math.PI * 2;
 const s = 0.5 + 0.5 * Math.sin(t * 0.52);
-
-// Outer: N=${cfg.n1}, A=${cfg.a1}, B=${cfg.b1}, \u03C9=+0.4
-// Mid:   N=${cfg.n2}, A=${cfg.a2}, B=${cfg.b2}, \u03C9=-0.6
-// Inner: N=${cfg.n3}, A=${cfg.a3}, B=${cfg.b3}, \u03C9=+0.8
-
-const mod = B * Math.sin(N * \u03B8 + t * \u03C9 + \u03C6) * s;
+const N = ${(cfg.n1 as number)}, A = ${(cfg.a1 as number)}, B = ${(cfg.b1 as number)};
+const omega = 0.4, phi = 0;
+const mod = B * Math.sin(N * theta + t * omega + phi) * s;
 const r = A + mod;
 return {
-  x: 50 + r * Math.cos(\u03B8) * ${cfg.scale},
-  y: 50 + r * Math.sin(\u03B8) * ${cfg.scale}
+  x: 50 + r * Math.cos(theta) * ${(cfg.scale as number)},
+  y: 50 + r * Math.sin(theta) * ${(cfg.scale as number)}
 };`;
   },
 };

@@ -77,8 +77,9 @@ export const sineWaveRing: AnimationDef = {
   },
   code(cfg) {
     return `const t = progress * Math.PI * 2;
+const duration = ${(cfg.durationMs as number)};
 const phase = (time % duration) / duration * Math.PI * 2;
-const r = ${cfg.baseRadius} + ${cfg.waveAmp} * Math.sin(${cfg.waveCount} * t + phase);
+const r = ${(cfg.baseRadius as number)} + ${(cfg.waveAmp as number)} * Math.sin(${cfg.waveCount as number} * t + phase);
 return {
   x: 50 + r * Math.cos(t),
   y: 50 + r * Math.sin(t)

@@ -119,11 +119,12 @@ export const doubleHelixDNA: AnimationDef = {
     return { x, y, radius, opacity, color };
   },
   code(cfg) {
-    return `const t = progress * Math.PI * 2 * ${cfg.turns};
+    return `const t = progress * Math.PI * 2 * ${(cfg.turns as number)};
 const rot = (time % 20000) / 20000 * Math.PI * 2;
+const phase = 0;
 const angle = t + phase + rot;
 return {
-  x: 50 + ${cfg.radius} * Math.cos(angle),
+  x: 50 + ${(cfg.radius as number)} * Math.cos(angle),
   y: 50 + (progress - 0.5) * 70
 };`;
   },

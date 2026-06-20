@@ -79,10 +79,11 @@ export const lissajous: AnimationDef = {
   },
   code(cfg) {
     return `const t = progress * Math.PI * 2;
+const pulse = (time % ${(cfg.durationMs as number)}) / ${(cfg.durationMs as number)} * Math.PI * 2;
 const phaseShift = Math.sin(pulse) * 0.3;
 return {
-  x: 50 + ${cfg.scale} * Math.sin(${cfg.a} * t + Math.PI/4 + phaseShift),
-  y: 50 + ${cfg.scale} * Math.sin(${cfg.b} * t)
+  x: 50 + ${(cfg.scale as number)} * Math.sin(${cfg.a as number} * t + Math.PI/4 + phaseShift),
+  y: 50 + ${(cfg.scale as number)} * Math.sin(${cfg.b as number} * t)
 };`;
   },
 };
