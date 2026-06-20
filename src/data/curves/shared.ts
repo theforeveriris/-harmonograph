@@ -51,15 +51,14 @@ export function getParticleGeneric(
     pulseSpeed?: number;
   },
 ): { x: number; y: number; radius: number; opacity: number; color?: string } {
-  const {
-    fadePower = 0.56,
-    baseRadius = 0.9,
-    maxRadius = 2.7,
-    minOpacity = 0.04,
-    depthAware = false,
-    pulseAmount = 0,
-    pulseSpeed = 3,
-  } = opts || {};
+  // Read from cfg first (user-adjustable), fall back to opts
+  const fadePower = (cfg.particleFadePower as number) ?? opts?.fadePower ?? 0.56;
+  const baseRadius = (cfg.particleBaseRadius as number) ?? opts?.baseRadius ?? 0.9;
+  const maxRadius = (cfg.particleMaxRadius as number) ?? opts?.maxRadius ?? 2.7;
+  const minOpacity = (cfg.particleMinOpacity as number) ?? opts?.minOpacity ?? 0.04;
+  const depthAware = opts?.depthAware ?? false;
+  const pulseAmount = (cfg.particlePulse as number) ?? opts?.pulseAmount ?? 0;
+  const pulseSpeed = (cfg.particlePulseSpeed as number) ?? opts?.pulseSpeed ?? 3;
 
   const normalizeProgress = (p: number) => ((p % 1) + 1) % 1;
   const count = (cfg.particleCount as number) || 100;
@@ -71,7 +70,7 @@ export function getParticleGeneric(
   let radius = baseRadius + fade * maxRadius;
   let opacity = minOpacity + fade * (1 - minOpacity);
 
-  // Particle pulsing (from reference code)
+  // Particle pulsing
   if (pulseAmount > 0) {
     const t = time / 1000;
     const pulse = 1 + Math.sin(t * pulseSpeed + index * 0.3) * pulseAmount;
