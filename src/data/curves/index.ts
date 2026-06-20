@@ -15,7 +15,6 @@ import { rhodonea, sunflower } from './flower';
 import { torusKnot, lissajousKnot } from './knot';
 import { hypotrochoidRose, witchOfAgnesi, talbotCurve } from './exotic';
 import { seashell, shamrock, teardrop, gearFlower, snowflake } from './beauty';
-import { pentagramCircle, hexagramCircle, runeCircle, doubleStarCircle, spiralRuneCircle } from './magic';
 
 export const animations = [
   // Rose / 玫瑰
@@ -58,10 +57,4 @@ export const animations = [
   hypotrochoidRose,
   witchOfAgnesi,
   talbotCurve,
-  // Magic / 魔法阵
-  pentagramCircle,
-  hexagramCircle,
-  runeCircle,
-  doubleStarCircle,
-  spiralRuneCircle,
 ];
