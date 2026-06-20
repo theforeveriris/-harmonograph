@@ -157,6 +157,16 @@ body {
   display: grid;
   gap: 20px;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* All section children of .main must not exceed parent width */
+.main > section {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* ========== CANVAS AREA ========== */
