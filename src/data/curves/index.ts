@@ -22,6 +22,9 @@ import { lorenzAttractor } from './lorenz';
 import { fermatSpiral } from './fermat';
 import { cycloid } from './cycloid';
 import { hyperbola } from './hyperbola';
+import { sierpinskiTriangle, kochSnowflake } from './fractal';
+import { peanoCurve, hilbertCurve } from './spacefill';
+import { fourierSeries, beatFrequency, dampedOscillation } from './waveMath';
 
 export const animations = [
   // Rose / 玫瑰
@@ -63,6 +66,9 @@ export const animations = [
   fermatSpiral,
   cycloid,
   hyperbola,
+  fourierSeries,
+  beatFrequency,
+  dampedOscillation,
   // Classic / 经典
   cardioidPolar,
   // Exotic / 异形
@@ -71,4 +77,8 @@ export const animations = [
   talbotCurve,
   voidSigil,
   lorenzAttractor,
+  sierpinskiTriangle,
+  kochSnowflake,
+  peanoCurve,
+  hilbertCurve,
 ];
