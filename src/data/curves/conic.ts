@@ -1,0 +1,143 @@
+import type { AnimationDef } from '../../types';
+import { buildPathGeneric, getParticleGeneric } from './shared';
+
+export const conicEllipse: AnimationDef = {
+  id: 'conic-ellipse',
+  category: 'Conic',
+  name: 'Conic Ellipse',
+  tag: 'Eccentricity Orbit',
+  params: [
+    // --- Curve geometry ---
+    { key: 'a', label: 'Semi-major', labelZh: '半长轴', type: 'range', min: 15, max: 40, step: 1, val: 30 },
+    { key: 'b', label: 'Semi-minor', labelZh: '半短轴', type: 'range', min: 10, max: 35, step: 1, val: 20 },
+    { key: 'scale', label: 'Scale', labelZh: '缩放', type: 'range', min: 0.5, max: 2, step: 0.1, val: 1.2 },
+    // --- Timing ---
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 250, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 5000, max: 20000, step: 100, val: 8000 },
+    // --- Path appearance ---
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    // --- Particles ---
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    // --- Color (HSL dynamic) ---
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 45 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#ffa500' },
+  ],
+  formula(cfg) {
+    return [
+      `x = 50 + a(t)\u00B7cos(t)\u00B7scale`,
+      `y = 50 + b(t)\u00B7sin(t)\u00B7scale`,
+      `a(t) breathes around ${cfg.a}`,
+      `b(t) breathes around ${cfg.b}`,
+      `scale = ${cfg.scale}`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
+    ].join('\n');
+  },
+  point(progress, time, cfg) {
+    const t = progress * Math.PI * 2;
+    const breath = Math.sin(time / 2000) * 2;
+    const a = (cfg.a as number) + breath;
+    const b = (cfg.b as number) + breath * 0.6;
+    const scale = cfg.scale as number;
+    return { x: 50 + a * Math.cos(t) * scale, y: 50 + b * Math.sin(t) * scale };
+  },
+  getRotation(_time, _cfg) {
+    return 0;
+  },
+  buildPath(time, cfg) {
+    return buildPathGeneric(this.point.bind(this), time, cfg, 300);
+  },
+  getParticle(index, progress, time, cfg) {
+    return getParticleGeneric(this.point.bind(this), index, progress, time, cfg, {
+      fadePower: 0.56,
+      baseRadius: 0.9,
+      maxRadius: 2.7,
+      minOpacity: 0.04,
+      pulseAmount: cfg.particlePulse as number,
+      pulseSpeed: 3,
+    });
+  },
+  code(cfg) {
+    return `const t = progress * Math.PI * 2;
+const breath = Math.sin(time / 2000) * 2;
+const a = ${cfg.a} + breath;
+const b = ${cfg.b} + breath * 0.6;
+return {
+  x: 50 + a * Math.cos(t) * ${cfg.scale},
+  y: 50 + b * Math.sin(t) * ${cfg.scale}
+};`;
+  },
+};
+
+export const conicSpiral: AnimationDef = {
+  id: 'conic-spiral',
+  category: 'Conic',
+  name: 'Conic Spiral',
+  tag: 'Archimedean Spiral',
+  params: [
+    // --- Curve geometry ---
+    { key: 'a', label: 'Start Radius', labelZh: '起始半径', type: 'range', min: 0, max: 10, step: 0.5, val: 2 },
+    { key: 'b', label: 'Growth Rate', labelZh: '增长率', type: 'range', min: 0.5, max: 5, step: 0.1, val: 2.5 },
+    { key: 'turns', label: 'Turns', labelZh: '圈数', type: 'range', min: 2, max: 8, step: 0.5, val: 5 },
+    // --- Timing ---
+    { key: 'particleCount', label: 'Particles', labelZh: '粒子数量', type: 'range', min: 50, max: 250, step: 1, val: 120 },
+    { key: 'trailSpan', label: 'Trail Span', labelZh: '拖尾跨度', type: 'range', min: 0.1, max: 1.0, step: 0.05, val: 0.5 },
+    { key: 'durationMs', label: 'Duration (ms)', labelZh: '周期时长', type: 'range', min: 5000, max: 20000, step: 100, val: 8000 },
+    // --- Path appearance ---
+    { key: 'strokeWidth', label: 'Stroke Width', labelZh: '描边宽度', type: 'range', min: 0.5, max: 10, step: 0.1, val: 3 },
+    { key: 'pathOpacity', label: 'Path Opacity', labelZh: '路径透明度', type: 'range', min: 0, max: 1, step: 0.05, val: 0.5 },
+    // --- Particles ---
+    { key: 'particlePulse', label: 'Particle Pulse', labelZh: '粒子脉冲', type: 'range', min: 0, max: 0.8, step: 0.05, val: 0.3 },
+    // --- Color (HSL dynamic) ---
+    { key: 'hueBase', label: 'Hue Base', labelZh: '色相基准', type: 'range', min: 0, max: 360, step: 1, val: 120 },
+    { key: 'hueSpeed', label: 'Hue Speed', labelZh: '色相速度', type: 'range', min: 0, max: 30, step: 0.5, val: 8 },
+    { key: 'hueSpread', label: 'Hue Spread', labelZh: '色相展开', type: 'range', min: 0, max: 180, step: 1, val: 60 },
+    { key: 'satBase', label: 'Saturation', labelZh: '饱和度', type: 'range', min: 20, max: 100, step: 1, val: 70 },
+    { key: 'lightBase', label: 'Lightness', labelZh: '亮度', type: 'range', min: 30, max: 90, step: 1, val: 67 },
+    { key: 'color', label: 'Color', labelZh: '静态颜色', type: 'color', val: '#32cd32' },
+  ],
+  formula(cfg) {
+    return [
+      `r(\u03B8) = a + b\u00B7\u03B8  (Archimedean)`,
+      `\u03B8 \u2208 [0, ${cfg.turns}\u00B7\u03C0]`,
+      `a = ${cfg.a}, b = ${cfg.b}, turns = ${cfg.turns}`,
+      `hue(t) = ${cfg.hueBase} + ${cfg.hueSpeed}\u00B7t`,
+    ].join('\n');
+  },
+  point(progress, _time, cfg) {
+    const theta = progress * Math.PI * 2 * (cfg.turns as number);
+    const a = cfg.a as number;
+    const b = cfg.b as number;
+    const r = a + b * theta;
+    return { x: 50 + r * Math.cos(theta), y: 50 + r * Math.sin(theta) };
+  },
+  getRotation(_time, _cfg) {
+    return 0;
+  },
+  buildPath(time, cfg) {
+    return buildPathGeneric(this.point.bind(this), time, cfg, 400);
+  },
+  getParticle(index, progress, time, cfg) {
+    return getParticleGeneric(this.point.bind(this), index, progress, time, cfg, {
+      fadePower: 0.56,
+      baseRadius: 0.9,
+      maxRadius: 2.7,
+      minOpacity: 0.04,
+      pulseAmount: cfg.particlePulse as number,
+      pulseSpeed: 3,
+    });
+  },
+  code(cfg) {
+    return `const theta = progress * Math.PI * 2 * ${cfg.turns};
+const r = ${cfg.a} + ${cfg.b} * theta;
+return {
+  x: 50 + r * Math.cos(theta),
+  y: 50 + r * Math.sin(theta)
+};`;
+  },
+};
