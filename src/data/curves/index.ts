@@ -26,6 +26,17 @@ import { sierpinskiTriangle, kochSnowflake } from './fractal';
 import { peanoCurve, hilbertCurve } from './spacefill';
 import { fourierSeries, beatFrequency, dampedOscillation } from './waveMath';
 
+export const categories = [
+  'Rose',
+  'Heart',
+  'Knot',
+  'Trochoid',
+  'Curve',
+  'Classic',
+  'Exotic',
+  'Custom',
+];
+
 export const animations = [
   // Rose / 玫瑰
   originalRose,

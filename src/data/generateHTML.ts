@@ -93,7 +93,8 @@ ${configEntries}
     const path = document.querySelector('#path');
 
     // --- Point function (from live parameters) ---
-    function point(progress, time) {
+    function point(progress, time, cfg) {
+      cfg = cfg || config;
 ${indentLines(pointCode, 6)}
     }
 

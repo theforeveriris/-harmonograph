@@ -1,57 +1,64 @@
 import type { AnimationDef } from '../types';
-import { getCategories } from '../data/utils';
 
 interface HeaderProps {
-  animations: AnimationDef[];
+  categories: string[];
   activeCategory: string;
-  activeAnimId: string | null;
-  onCategoryChange: (category: string) => void;
-  onAnimationChange: (anim: AnimationDef) => void;
+  onSelectCategory: (category: string) => void;
+  animations: AnimationDef[];
+  activeAnimation: AnimationDef | null;
+  onSelectAnimation: (anim: AnimationDef) => void;
 }
 
+const CATEGORY_ZH: Record<string, string> = {
+  Rose: '玫瑰',
+  Heart: '心形',
+  Knot: '纽结',
+  Trochoid: '摆轮',
+  Curve: '曲线',
+  Classic: '经典',
+  Exotic: '异形',
+  Custom: '自定义',
+};
+
 export function Header({
-  animations,
+  categories,
   activeCategory,
-  activeAnimId,
-  onCategoryChange,
-  onAnimationChange,
+  onSelectCategory,
+  animations,
+  activeAnimation,
+  onSelectAnimation,
 }: HeaderProps) {
-  const categories = getCategories(animations);
   const categoryAnims = animations.filter((a) => a.category === activeCategory);
+  const isCustom = activeCategory === 'Custom';
 
   return (
     <header className="header">
       <div className="header-inner">
         <div className="brand">Harmonograph</div>
         <nav className="nav-l1">
-          {categories.map((cat) => {
-            const catDef = animations.find((a) => a.category === cat);
-            return (
-              <button
-                key={cat}
-                className={`nav-l1-btn${cat === activeCategory ? ' active' : ''}`}
-                onClick={() => {
-                  onCategoryChange(cat);
-                  const first = animations.find((a) => a.category === cat);
-                  if (first) onAnimationChange(first);
-                }}
-              >
-                {catDef?.categoryZh ? `${cat} / ${catDef.categoryZh}` : cat}
-              </button>
-            );
-          })}
-        </nav>
-        <nav className="nav-l2">
-          {categoryAnims.map((anim) => (
+          {categories.map((cat) => (
             <button
-              key={anim.id}
-              className={`nav-l2-btn${anim.id === activeAnimId ? ' active' : ''}`}
-              onClick={() => onAnimationChange(anim)}
+              key={cat}
+              className={`nav-l1-btn${cat === activeCategory ? ' active' : ''}`}
+              onClick={() => onSelectCategory(cat)}
             >
-              {anim.nameZh ? `${anim.name} / ${anim.nameZh}` : anim.name}
+              {CATEGORY_ZH[cat] ? `${cat} / ${CATEGORY_ZH[cat]}` : cat}
             </button>
           ))}
         </nav>
+        {!isCustom && (
+          <nav className="nav-l2">
+            {categoryAnims.map((anim) => (
+              <button
+                key={anim.id}
+                className={`nav-l2-btn${anim.id === activeAnimation?.id ? ' active' : ''}`}
+                onClick={() => onSelectAnimation(anim)}
+              >
+                {anim.nameZh ? `${anim.name} / ${anim.nameZh}` : anim.name}
+              </button>
+            ))}
+          </nav>
+        )}
       </div>
     </header>
   );
